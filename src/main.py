@@ -3,112 +3,79 @@ from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
     QWidget,
-    QVBoxLayout,
+    QTreeWidget,
+    QTreeWidgetItem,
+    QStackedWidget,
     QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QComboBox,
-    QTextEdit,
+    QVBoxLayout,
 )
-from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib.pyplot as plt
-import numpy as np
+from PyQt5.QtGui import QFont
 from QSSLoader import QSSLoader
+from dataMining import DataMiningTab
+from attackDetection import AttackDetectionTab
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
         self.setWindowTitle("数据挖掘与攻击检测展示系统")
-        self.setGeometry(100, 100, 900, 600)
+        self.resize(900, 600)
 
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
+        # 左侧树形导航
+        self.tree = QTreeWidget()
+        self.tree.setHeaderHidden(True)
+        self.tree.setMaximumWidth(200)
 
-        # Layouts
-        tablayout = QVBoxLayout()
-        main_layout = QVBoxLayout()
-        top_layout = QHBoxLayout()
-        bottom_layout = QVBoxLayout()
+        # 添加顶级节点
+        datamine_item = QTreeWidgetItem(self.tree, ["数据挖掘"])
+        preprocessing_item = QTreeWidgetItem(datamine_item, ["预处理"])
+        feature_item = QTreeWidgetItem(datamine_item, ["特征工程"])
+        model_item = QTreeWidgetItem(datamine_item, ["模型训练"])
 
-        self.Data_tab = QWidget()
-        # Dropdown for algorithm selection
-        self.combo = QComboBox()
-        self.combo.addItems(
-            [
-                "KMeans",
-                "DBSCAN",
-                "Hierarchical Clustering",
-                "PCA",
-                "LDA",
-                "Logistic Regression",
-                "Random Forest",
-                "SVM",
-                "Decision Tree",
-                "Naive Bayes",
-                "Gradient Boosting",
-                "XGBoost",
-                "LightGBM",
-                "Isolation Forest",
-                "Autoencoder",
-                "One-Class SVM",
-                "KNN",
-                "Neural Network",
-                "AdaBoost",
-                "Bagging",
-                "Ridge Regression",
-            ]
-        )
-        top_layout.addWidget(QLabel("选择算法:"))
-        top_layout.addWidget(self.combo)
+        attack_item = QTreeWidgetItem(self.tree, ["攻击检测"])
 
-        # Run button
-        self.run_button = QPushButton("运行")
-        self.run_button.clicked.connect(self.run_algorithm)
-        top_layout.addWidget(self.run_button)
+        self.tree.expandItem(datamine_item)
 
-        # Matplotlib canvas for visualization
-        self.figure, self.ax = plt.subplots()
-        self.canvas = FigureCanvas(self.figure)
+        # 右侧堆栈页面
+        self.stack = QStackedWidget()
+        self.data_tab = DataMiningTab()
+        self.attack_tab = AttackDetectionTab()
+        # 可以扩展更多子页面
+        self.stack.addWidget(self.data_tab)  # index 0
+        self.stack.addWidget(self.attack_tab)  # index 1
 
-        # Log text box
-        self.log_text = QTextEdit()
-        self.log_text.setReadOnly(True)
-        self.log_text.setPlaceholderText("Log output...")
+        # 整体布局
+        central_widget = QWidget()
+        main_layout = QHBoxLayout(central_widget)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.addWidget(self.tree)
+        main_layout.addWidget(self.stack)
+        self.setCentralWidget(central_widget)
 
-        # Combine layouts
-        main_layout.addLayout(top_layout)
-        main_layout.addWidget(self.canvas, stretch=3)
-        main_layout.addWidget(QLabel("Logs:"))
-        main_layout.addWidget(self.log_text, stretch=1)
+        # 连接点击信号
+        self.tree.itemClicked.connect(self.on_tree_item_clicked)
 
-        self.central_widget.setLayout(main_layout)
-
-    def run_algorithm(self):
-        algorithm = self.combo.currentText()
-        self.log_text.append(f"Running {algorithm}...")
-
-        # Example visualization: random scatter
-        self.ax.clear()
-        x = np.random.rand(100)
-        y = np.random.rand(100)
-        self.ax.scatter(x, y, c="blue", alpha=0.5)
-        self.ax.set_title(f"Visualization of {algorithm}")
-        self.canvas.draw()
-
-        self.log_text.append(f"{algorithm} completed.\n")
+    def on_tree_item_clicked(self, item, column):
+        text = item.text(column)
+        if text == "数据挖掘":
+            self.stack.setCurrentIndex(0)
+            self.setWindowTitle("数据挖掘与攻击检测展示系统 - 数据挖掘")
+        elif text == "攻击检测":
+            self.stack.setCurrentIndex(1)
+            self.setWindowTitle("数据挖掘与攻击检测展示系统 - 攻击检测")
+        elif text in ["预处理", "特征工程", "模型训练"]:
+            # 这里可以拓展 DataMiningTab 里的子切换逻辑
+            self.stack.setCurrentIndex(0)
+            self.data_tab.switch_to(text)  # 需要在 DataMiningTab 里实现这个方法
+            self.setWindowTitle(f"数据挖掘与攻击检测展示系统 - {text}")
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    font = QFont("Microsoft YaHei UI", 12)
-    app.setFont(font)
-    window = MainWindow()
+    app.setFont(QFont("Microsoft YaHei UI", 12))
     style_file = "../style/main.qss"
-    style_sheet = QSSLoader.read_qss_file(style_file)
-    window.setStyleSheet(style_sheet)
+    app.setStyleSheet(QSSLoader.read_qss_file(style_file))
+    window = MainWindow()
     window.show()
     sys.exit(app.exec_())
