@@ -38,13 +38,13 @@ class MainWindow(QMainWindow):
         tab_layout = QHBoxLayout()
 
         self.data_tab_button = QPushButton("数据挖掘")
-        self.aAttack_tab_button = QPushButton("攻击检测")
+        self.attack_tab_button = QPushButton("攻击检测")
 
         self.data_tab_button.clicked.connect(self.change_Datatab)
-        self.aAttack_tab_button.clicked.connect(self.change_Attacktab)
+        self.attack_tab_button.clicked.connect(self.change_Attacktab)
 
         tab_layout.addWidget(self.data_tab_button)
-        tab_layout.addWidget(self.aAttack_tab_button)
+        tab_layout.addWidget(self.attack_tab_button)
 
         self.main_layout.addLayout(tab_layout)
         self.main_layout.addWidget(self.data_tab)
