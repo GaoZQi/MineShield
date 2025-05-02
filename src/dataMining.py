@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QTextEdit,
 )
-from PyQt5.QtGui import QPalette, QColor
+
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,13 +20,7 @@ from widget.RoundWidget import RoundWidget
 class DataMiningTab(RoundWidget):
     def __init__(self):
         super().__init__()
-        # self.setAutoFillBackground(True)
-        # pal = self.palette()
-        # pal.setColor(QPalette.Window, QColor("#ffffff"))  # 设置背景颜色
-        # self.setPalette(pal)  # 应用调色板
-        self.setRadius(20)  # 设置圆角半径
-        self.setBackgroundColor(QColor("#f8f8f8"))  # 设置背景颜色
-        self.setContentsMargins(10, 10, 10, 10)  # 设置内边距
+
         main_layout = QVBoxLayout()
         top_layout = QHBoxLayout()
 
@@ -78,8 +72,6 @@ class DataMiningTab(RoundWidget):
         # Combine layouts
         main_layout.addLayout(top_layout)
         main_layout.addWidget(self.canvas, stretch=3)
-        main_layout.addWidget(QLabel("Logs:"))
-        main_layout.addWidget(self.log_text, stretch=1)
 
         self.setLayout(main_layout)
 
