@@ -294,7 +294,7 @@ dependencies = [
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.1" },
     { name = "numpy", specifier = ">=2.2.5" },
-    { name = "pyqt5", specifier = ">=5.15.9" },
+    { name = "pyqt5", specifier = ">=5.15" },
     { name = "pyqt5-tools", specifier = ">=5.15.9.3.3" },
 ]
 

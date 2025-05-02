@@ -10,27 +10,31 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QTextEdit,
 )
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import numpy as np
+from QSSLoader import QSSLoader
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("MineShield: Data Mining & Attack Detection")
+        self.setWindowTitle("数据挖掘与攻击检测展示系统")
         self.setGeometry(100, 100, 900, 600)
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
 
         # Layouts
+        tablayout = QVBoxLayout()
         main_layout = QVBoxLayout()
         top_layout = QHBoxLayout()
         bottom_layout = QVBoxLayout()
 
+        self.Data_tab = QWidget()
         # Dropdown for algorithm selection
         self.combo = QComboBox()
         self.combo.addItems(
@@ -58,11 +62,11 @@ class MainWindow(QMainWindow):
                 "Ridge Regression",
             ]
         )
-        top_layout.addWidget(QLabel("Select Algorithm:"))
+        top_layout.addWidget(QLabel("选择算法:"))
         top_layout.addWidget(self.combo)
 
         # Run button
-        self.run_button = QPushButton("Run Algorithm")
+        self.run_button = QPushButton("运行")
         self.run_button.clicked.connect(self.run_algorithm)
         top_layout.addWidget(self.run_button)
 
@@ -100,6 +104,11 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    font = QFont("Microsoft YaHei UI", 12)
+    app.setFont(font)
     window = MainWindow()
+    style_file = "../style/main.qss"
+    style_sheet = QSSLoader.read_qss_file(style_file)
+    window.setStyleSheet(style_sheet)
     window.show()
     sys.exit(app.exec_())
