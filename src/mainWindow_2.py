@@ -20,6 +20,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统")
         self.setGeometry(100, 100, 900, 600)
+        self.setContentsMargins(10, 10, 10, 10)  # 设置内边距
 
         # —— STEP 1: 创建堆栈和按钮组 ——
         self.stack = QStackedWidget()

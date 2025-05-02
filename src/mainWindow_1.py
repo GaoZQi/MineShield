@@ -25,7 +25,6 @@ class MainWindow(QMainWindow):
         # 左侧导航列表
         self.list_widget = QListWidget()
         self.list_widget.setFrameShape(QListWidget.NoFrame)
-        self.list_widget.setStyleSheet(QSSLoader.read_qss_file("../style/QList.qss"))
 
         # 添加导航项
         for idx, text in enumerate(["数据挖掘", "攻击检测"]):
