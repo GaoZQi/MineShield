@@ -20,6 +20,7 @@ from widget.RoundWidget import RoundWidget
 from QSSLoader import QSSLoader
 from widget.IconButton import IconButton
 from alorgorithmDialog import PopupDialog
+from algorithms import *
 
 
 class DataMiningTab(RoundWidget):
@@ -27,29 +28,29 @@ class DataMiningTab(RoundWidget):
         super().__init__()
         self.setBackgroundColor(QColor(253, 253, 253, 190))
         self.setContentsMargins(36, 0, 36, 36)  # 设置内边距
-        self.algorithms = [
-            "KMeans",
-            "DBSCAN",
-            "Hierarchical Clustering",
-            "PCA",
-            "LDA",
-            "Logistic Regression",
-            "Random Forest",
-            "SVM",
-            "Decision Tree",
-            "Naive Bayes",
-            "Gradient Boosting",
-            "XGBoost",
-            "LightGBM",
-            "Isolation Forest",
-            "Autoencoder",
-            "One-Class SVM",
-            "KNN",
-            "Neural Network",
-            "AdaBoost",
-            "Bagging",
-            "Ridge Regression",
-        ]
+        self.algorithms = {
+            "KMeans": Kemeans,
+            "DBSCAN": DBSCAN,
+            "Hierarchical Clustering": HierarchicalClustering,
+            "PCA": PCA,
+            "LDA": LDA,
+            "Logistic Regression": LogisticRegression(),
+            "Random Forest": RandomForest,
+            "SVM": SVM,
+            "Decision Tree": DecisionTree,
+            "Naive Bayes": NaiveBayes,
+            "Gradient Boosting": GradientBoosting,
+            "XGBoost": XGBoost,
+            "LightGBM": LightGBM,
+            "Isolation Forest": IsolationForest,
+            "Autoencoder": Autoencoder,
+            "One-Class SVM": OneClassSVM,
+            "KNN": KNN,
+            "Neural Network": NeuralNetwork,
+            "AdaBoost": AdaBoost,
+            "Bagging": Bagging,
+            "Ridge Regression": RidgeRegression,
+        }
         self.choose = self.algorithms[0]
         main_layout = QVBoxLayout()
         alorgorithm_layout = QHBoxLayout()
