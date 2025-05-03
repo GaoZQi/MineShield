@@ -6,26 +6,63 @@ click==8.1.8
     #   pyqt5-tools
     #   qt5-tools
 colorama==0.4.6
-    # via click
+    # via
+    #   click
+    #   tqdm
 contourpy==1.3.2
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
 fonttools==4.57.0
     # via matplotlib
+joblib==1.4.2
+    # via
+    #   mineshield (pyproject.toml)
+    #   mlxtend
+    #   pynndescent
+    #   scikit-learn
 kiwisolver==1.4.8
     # via matplotlib
+llvmlite==0.44.0
+    # via
+    #   numba
+    #   pynndescent
 matplotlib==3.10.1
+    # via
+    #   mineshield (pyproject.toml)
+    #   mlxtend
+    #   seaborn
+mlxtend==0.23.4
     # via mineshield (pyproject.toml)
+networkx==3.4.2
+    # via mineshield (pyproject.toml)
+numba==0.61.2
+    # via
+    #   pynndescent
+    #   umap-learn
 numpy==2.2.5
     # via
     #   mineshield (pyproject.toml)
     #   contourpy
     #   matplotlib
+    #   mlxtend
+    #   numba
+    #   pandas
+    #   scikit-learn
+    #   scipy
+    #   seaborn
+    #   umap-learn
 packaging==25.0
     # via matplotlib
+pandas==2.2.3
+    # via
+    #   mineshield (pyproject.toml)
+    #   mlxtend
+    #   seaborn
 pillow==11.2.1
     # via matplotlib
+pynndescent==0.5.13
+    # via umap-learn
 pyparsing==3.2.3
     # via matplotlib
 pyqt5==5.15.9
@@ -44,12 +81,42 @@ pyqt5-sip==12.17.0
 pyqt5-tools==5.15.9.3.3
     # via mineshield (pyproject.toml)
 python-dateutil==2.9.0.post0
-    # via matplotlib
+    # via
+    #   matplotlib
+    #   pandas
 python-dotenv==1.1.0
     # via pyqt5-tools
+pytz==2025.2
+    # via pandas
+pywin32==310
+    # via mineshield (pyproject.toml)
 qt5-applications==5.15.2.2.3
     # via qt5-tools
 qt5-tools==5.15.2.1.3
     # via pyqt5-plugins
+scikit-learn==1.6.1
+    # via
+    #   mineshield (pyproject.toml)
+    #   mlxtend
+    #   pynndescent
+    #   umap-learn
+scipy==1.15.2
+    # via
+    #   mlxtend
+    #   pynndescent
+    #   scikit-learn
+    #   umap-learn
+seaborn==0.13.2
+    # via mineshield (pyproject.toml)
 six==1.17.0
     # via python-dateutil
+threadpoolctl==3.6.0
+    # via scikit-learn
+tqdm==4.67.1
+    # via umap-learn
+tzdata==2025.2
+    # via pandas
+umap-learn==0.5.7
+    # via mineshield (pyproject.toml)
+win32mica==3.0
+    # via mineshield (pyproject.toml)
