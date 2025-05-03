@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from sklearn.decomposition import PCA
 
 
 class MilitaryTextClassifier:
@@ -107,69 +108,33 @@ class MilitaryTextClassifier:
         )
 
         self.model.fit(X_train, y_train)
-        y_pred = self.model.predict(X_test)
+        y_pred = self.model.predict(X)
+
+        # PCA降维到2D
+        pca = PCA(n_components=2, random_state=42)
+        reduced_X = pca.fit_transform(X)
+
+        # 散点图
+        scatter = ax.scatter(
+            reduced_X[:, 0],
+            reduced_X[:, 1],
+            c=y_pred,
+            cmap="tab10",
+            s=50,
+            edgecolors="black",
+            linewidths=0.5,
+            alpha=0.7,
+        )
+        ax.set_title("Military Text Classification (PCA 2D)")
+        ax.set_xlabel("PCA Component 1")
+        ax.set_ylabel("PCA Component 2")
+        ax.grid(True)
+        plt.colorbar(scatter, ax=ax, label="Predicted Category")
+        canvas.draw()
+
+        # 控制台输出报告
         target_names = self.label_encoder.inverse_transform(
-            sorted(set(y_test) | set(y_pred))
+            sorted(set(y) | set(y_pred))
         )
-
-        print("\n📊 测试集分类报告：\n")
-        print(classification_report(y_test, y_pred, target_names=target_names))
-
-        # 分类报告柱状图
-        df_test_report = (
-            pd.DataFrame(
-                classification_report(
-                    y_test, y_pred, target_names=target_names, output_dict=True
-                )
-            )
-            .transpose()
-            .iloc[:-3]
-        )
-
-        y_all_pred = self.model.predict(X)
-        df_all_report = (
-            pd.DataFrame(
-                classification_report(
-                    y,
-                    y_all_pred,
-                    target_names=self.label_encoder.classes_,
-                    output_dict=True,
-                )
-            )
-            .transpose()
-            .iloc[:-3]
-        )
-
-        colors = ["#1f77b4", "#ff7f0e", "#2ca02c"]
-        fig, axes = plt.subplots(1, 2, figsize=(16, 6), sharey=True)
-        df_test_report[["precision", "recall", "f1-score"]].plot(
-            kind="bar", ax=axes[0], color=colors, legend=False
-        )
-        axes[0].set_title("Test Set Classification Report")
-        axes[0].set_xticklabels(df_test_report.index, rotation=45)
-        axes[0].grid(axis="y", linestyle="--", alpha=0.5)
-        df_all_report[["precision", "recall", "f1-score"]].plot(
-            kind="bar", ax=axes[1], color=colors, legend=True
-        )
-        axes[1].set_title("All Data Classification Report")
-        axes[1].set_xticklabels(df_all_report.index, rotation=45)
-        axes[1].grid(axis="y", linestyle="--", alpha=0.5)
-        plt.tight_layout()
-        canvas.draw()
-
-        # 饼图可视化：测试集标签分布
-        label_names = self.label_encoder.inverse_transform(y_test)
-        label_counts = pd.Series(label_names).value_counts()
-
-        fig_pie, ax_pie = plt.subplots(figsize=(6, 6))
-        ax_pie.pie(
-            label_counts.values,
-            labels=label_counts.index,
-            autopct="%1.1f%%",
-            startangle=140,
-            colors=sns.color_palette("tab10", len(label_counts)),
-        )
-        ax_pie.axis("equal")
-        ax_pie.set_title("Test Set Subcategory Distribution")
-        plt.tight_layout()
-        canvas.draw()
+        print("\n📊 全部数据分类报告：\n")
+        print(classification_report(y, y_pred, target_names=target_names))
