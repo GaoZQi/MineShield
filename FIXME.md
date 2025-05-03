@@ -1,4 +1,4 @@
-# 数据挖掘
+# 前后端对接问题一览表
 
 ## 环境信息
 
@@ -149,19 +149,29 @@ dependencies = [
 ]
 ```
 
-## Dimensionality_Reduction
+## 数据挖掘
+
+### Dimensionality_Reduction
 
 数据集有乱码
 
 ![alt text](assets/image.png)
 
-## Linear_Regression
+### Linear_Regression
 
 数据集有乱码
 
 ![alt text](assets/image-1.png)
 
-## Random_Forest
+### K-Means
+
+未提供数据集，根据代码选择使用上次作业数据测试。
+
+![alt text](assets/image-8.png)
+
+### Random_Forest
+
+未提供数据集，根据代码选择使用上次作业数据测试。
 
 运行结果无法显示在前端，存在警告
 
@@ -180,7 +190,7 @@ dependencies = [
 
 使用 GPT 修改为如下代码
 
-````python
+```python
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -323,17 +333,21 @@ class MilitaryTextClassifier:
         print(classification_report(y, y_pred, target_names=target_names))
 ```
 
-## Isolation_Forest
+运行效果如下
+
+![alt text](assets/image-7.png)
+
+### Isolation_Forest
 
 未提供数据集，根据代码使用鸢尾花数据集进行测试，运行结果异常。
 
 ![alt text](assets/image-5.png)
 
-# Apriori
+### Apriori
 
 未提供可视化展示。
 
-使用GPT生成如下代码。
+使用 GPT 生成如下代码。
 
 ```python
 import pandas as pd
@@ -425,9 +439,9 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(figsize=(10, 6))
     draw_rule_graph(rules, ax, plt, top_n=20)
     plt.show()
-````
+```
 
-# GMM
+### GMM
 
 无法加载模型，运行报错。
 
@@ -452,7 +466,7 @@ if __name__ == "__main__":
 
 ![alt text](assets/image-6.png)
 
-# Agglomerative Clustering
+### Agglomerative Clustering
 
 与上一个相同
 
