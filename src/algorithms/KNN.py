@@ -1,0 +1,49 @@
+import joblib
+import pandas as pd
+
+
+class AttackKNNDetector:
+    def __init__(self):
+        """
+        初始化模型、编码器、特征名
+        """
+        self.model = joblib.load("../../res/model/KNN/knn_attack_model.pkl")
+        self.encoder = joblib.load("../../res/model/KNN/label_encoder.pkl")
+        self.feature_names = joblib.load("../../res/model/KNN/feature_names.pkl")
+
+    def parse_text_to_dataframe(self, text: str) -> pd.DataFrame:
+        """
+        将输入的原始文本（CSV格式）转换为模型需要的DataFrame
+        :param text: 一行CSV格式文本，例如：'60,0,0,12345,80,...'
+        :return: DataFrame对象（包含特征列）
+        """
+        values = text.strip().split(",")
+        df = pd.DataFrame([values], columns=self.feature_names)
+        df = df.apply(pd.to_numeric, errors="coerce")  # 保证数值型
+        return df
+
+    def predict_from_text(self, text: str) -> str:
+        """
+        从CSV格式字符串预测标签
+        :param text: 字符串，如 '60,0,0,12345,80,...'
+        :return: 预测标签（如 'normal' 或 'malicious'）
+        """
+        df = self.parse_text_to_dataframe(text)
+        pred = self.model.predict(df)
+        return self.encoder.inverse_transform(pred)[0]
+
+
+if __name__ == "__main__":
+    model = AttackKNNDetector()
+    # 读取文件里的每一行
+    # with open("../../res/data/KNN/malicious_dataset.csv", "r") as f:
+    #     for line in f:
+    #         line = line.strip()
+    #         if not line:
+    #             continue  # 跳过空行
+    #         result = model.predict_from_text(line)
+    #         print("预测结果：", result)
+    result = model.predict_from_text(
+        "60,0,0,12345,80,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+    )
+    print("预测结果：", result)

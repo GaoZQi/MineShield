@@ -20,7 +20,7 @@ class TabButton(QPushButton):
 
         # 尺寸配置
         self.radius = 15  # 顶部圆角半径
-        self.padding = 15
+        self.padding = 0
 
         # 控件设置
         self.setFont(QFont("Microsoft YaHei", 12, weight=QFont.Bold))

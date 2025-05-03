@@ -11,7 +11,7 @@ from QSSLoader import QSSLoader
 from PyQt5.QtGui import QFont, QColor, QPainter, QPen
 
 
-class PopupDialog(QDialog):
+class alorgorithmDialog(QDialog):
     def __init__(self, parent=None, items=None, title="选择项", choose=None):
 
         super().__init__(parent)
@@ -94,6 +94,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(QSSLoader.load_qss_files("../style"))
     app.setFont(QFont("Microsoft YaHei UI", 12))
-    dialog = PopupDialog()
+    dialog = alorgorithmDialog()
     dialog.show()
     sys.exit(app.exec_())

@@ -22,7 +22,7 @@ class MainWindow(MicaWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统")
-        self.setGeometry(100, 100, 1200, 900)
+        self.setGeometry(100, 100, 1840, 1200)
         self.setContentsMargins(5, 15, 5, 5)  # 设置内边距
 
         # —— STEP 1: 创建堆栈和按钮组 ——
