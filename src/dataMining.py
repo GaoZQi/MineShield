@@ -10,6 +10,8 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QTextEdit,
     QDialog,
+    QLineEdit,
+    QFileDialog,
 )
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QColor
@@ -51,7 +53,8 @@ class DataMiningTab(RoundWidget):
             "Bagging": Bagging,
             "Ridge Regression": RidgeRegression,
         }
-        self.choose = self.algorithms[0]
+        self.dataURL = None
+        self.choose = list(self.algorithms.keys())[0]
         main_layout = QVBoxLayout()
         alorgorithm_layout = QHBoxLayout()
         alorgorithm_layout.setContentsMargins(0, 0, 0, 0)
@@ -81,12 +84,20 @@ class DataMiningTab(RoundWidget):
         data_tip.setObjectName("H2")
         main_layout.addWidget(data_tip)
 
-        self.combo = QComboBox()
-        self.combo.addItems(self.algorithms)
-        data_layout.addWidget(self.combo)
+        data_URL_layout = QHBoxLayout()
+        self.dataURLText = QLineEdit()
+        self.dataURLText.setPlaceholderText("数据集路径")
+        data_URL_layout.addWidget(self.dataURLText)
+        choose_button = QPushButton("选择数据集")
+        choose_button.setObjectName("chooseButton")
+        choose_button.clicked.connect(self.choose_file)
+        data_URL_layout.addWidget(choose_button)
+        data_layout.addLayout(data_URL_layout)
 
         # Run button
         self.run_button = QPushButton("运行")
+        self.run_button.setObjectName("OKButton")
+        self.run_button.setEnabled(False)
         self.run_button.clicked.connect(self.run_algorithm)
         data_layout.addWidget(self.run_button)
 
@@ -103,14 +114,7 @@ class DataMiningTab(RoundWidget):
 
         self.setLayout(main_layout)
 
-    def run_algorithm(self):
-        algorithm = self.combo.currentText()
-        # Example visualization: random scatter
-        self.ax.clear()
-        x = np.random.rand(100)
-        y = np.random.rand(100)
-        self.ax.scatter(x, y, c="blue", alpha=0.5)
-        self.canvas.draw()
+    def run_algorithm(self): ...
 
     def show_popup(self):
         dialog = PopupDialog(
@@ -121,7 +125,21 @@ class DataMiningTab(RoundWidget):
             # 更新标签或下拉框
             print("Selected algorithm:", selected)
             self.algorithm_label.setText(self.tip + selected)
-            self.combo.setCurrentText(selected)
+
+    def choose_file(self):
+        # 选择文件对话框
+        file_name, _ = QFileDialog.getOpenFileName(
+            self, "选择数据集", "", "CSV Files (*.csv);;All Files (*)"
+        )
+        if file_name:
+            self.dataURLText.setText(file_name)
+            print("Selected file:", file_name)
+            self.dataURL = file_name
+            self.run_button.setEnabled(True)
+        else:
+            self.dataURLText.setText("")
+            self.run_button.setEnabled(False)
+            print("No file selected.")
 
 
 if __name__ == "__main__":

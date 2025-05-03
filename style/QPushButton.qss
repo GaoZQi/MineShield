@@ -37,3 +37,9 @@ QPushButton#OKButton:hover {
 QPushButton#OKButton:pressed {
     background-color: #075cac;
 }
+
+/* 按钮禁用 */
+QPushButton#OKButton:disabled {
+    background-color: #bababa;
+    border: 2px solid #a0a0a0;
+}
