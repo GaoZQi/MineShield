@@ -9,4 +9,6 @@ dependencies = [
     "numpy>=2.2.5",
     "pyqt5>=5.15",
     "pyqt5-tools>=5.15.9.3.3",
+    "pywin32>=310",
+    "win32mica>=3.0",
 ]

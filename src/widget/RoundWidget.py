@@ -10,7 +10,6 @@ class RoundWidget(QWidget):
 
     Usage:
         widget = RoundWidget(radius=15, color=QColor(100, 150, 200))
-        widget.addWidget(child_widget)
     """
 
     def __init__(self, radius=10, color=QColor(255, 255, 255), parent=None):

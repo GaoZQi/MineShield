@@ -1,0 +1,13 @@
+QLabel#H1 {
+    font-size: 40px;
+    font-weight: bold;
+    color: #333333;
+    padding: 0, 0, 20, 0;
+}
+
+QLabel#H2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333333;
+    padding: 0, 0, 20, 0;
+}

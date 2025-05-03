@@ -9,13 +9,15 @@ from PyQt5.QtWidgets import (
     QStackedWidget,
     QButtonGroup,
 )
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QColor
 from QSSLoader import QSSLoader
 from dataMining import DataMiningTab
 from attackDetection import AttackDetectionTab
+from widget.RoundWidget import RoundWidget
+from widget.MicaWindow import MicaWindow
 
 
-class MainWindow(QMainWindow):
+class MainWindow(MicaWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统")
@@ -52,7 +54,8 @@ class MainWindow(QMainWindow):
         # h_layout.addStretch()
 
         # —— STEP 4: 布局组合 ——
-        central = QWidget()
+        central = RoundWidget(radius=10, color=QColor(255, 255, 255, 200))
+        central.setContentsMargins(0, 0, 0, 0)
         v_layout = QVBoxLayout(central)
         v_layout.addWidget(tab_bar)
         v_layout.addWidget(self.stack)
