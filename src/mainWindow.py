@@ -15,17 +15,19 @@ from dataMining import DataMiningTab
 from attackDetection import AttackDetectionTab
 from widget.RoundWidget import RoundWidget
 from widget.MicaWindow import MicaWindow
+from widget.TabButton import TabButton
 
 
 class MainWindow(MicaWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统")
-        self.setGeometry(100, 100, 900, 600)
-        self.setContentsMargins(10, 10, 10, 10)  # 设置内边距
+        self.setGeometry(100, 100, 1200, 900)
+        self.setContentsMargins(5, 15, 5, 5)  # 设置内边距
 
         # —— STEP 1: 创建堆栈和按钮组 ——
         self.stack = QStackedWidget()
+
         self.btn_group = QButtonGroup(self)  # 默认为 Exclusive
         self.btn_group.buttonClicked[int].connect(self.onTabChanged)
         self.btn_group.setExclusive(True)
@@ -38,13 +40,15 @@ class MainWindow(MicaWindow):
 
         # —— STEP 3: 创建按钮并加入按钮组 ——
         tab_bar = QWidget()
+        tab_bar.setContentsMargins(15, 0, 15, 0)  # 新增：去除按钮容器边距
         h_layout = QHBoxLayout(tab_bar)
+        h_layout.setContentsMargins(0, 0, 0, 0)  # 新增：去除布局边距
+        h_layout.setSpacing(0)  # 新增：去除按钮间距
+        # h_layout.setSpacing(0)  # 新增：去除按钮间距
         for idx, (text, widget) in enumerate(
             [("数据挖掘", self.data_tab), ("攻击检测", self.attack_tab)]
         ):
-            btn = QPushButton(text)
-            btn.setCheckable(True)  # 可切换
-            btn.setObjectName("tabButton")
+            btn = TabButton(text)
 
             if idx == 0:
                 btn.setChecked(True)  # 默认选中第一页
@@ -54,11 +58,12 @@ class MainWindow(MicaWindow):
         # h_layout.addStretch()
 
         # —— STEP 4: 布局组合 ——
-        central = RoundWidget(radius=10, color=QColor(255, 255, 255, 200))
-        central.setContentsMargins(0, 0, 0, 0)
+        central = RoundWidget(radius=15, color=QColor(255, 255, 255, 0))
+        central.setContentsMargins(10, 10, 10, 10)
         v_layout = QVBoxLayout(central)
         v_layout.addWidget(tab_bar)
         v_layout.addWidget(self.stack)
+        v_layout.setSpacing(0)  # 新增：去除组件间距
         self.setCentralWidget(central)
 
     def onTabChanged(self, index: int):

@@ -8,7 +8,7 @@ class IconButton(QPushButton):
     def __init__(self, svg_data: str, tooltip: str = "", parent=None):
         super().__init__(parent)
         # 基础样式配置
-        self.setToolTip(tooltip)
+        # self.setToolTip(tooltip)
         self.setCursor(Qt.PointingHandCursor)
 
         # 颜色配置

@@ -1,0 +1,39 @@
+/* 按钮样式 */
+QPushButton {
+    background-color: #fdfdfd;
+    border: 2px solid #f1f1f1;
+    border-radius: 15px;
+    padding: 10px 20px;
+    color: #333333;
+    font-weight: 600;
+}
+
+/* 按钮悬停效果 */
+QPushButton:hover {
+    background-color: #F0F0F0;
+}
+
+/* 按钮按下效果 */
+QPushButton:pressed {
+    background-color: #E5E5E5;
+}
+
+/* 按钮样式 */
+QPushButton#OKButton {
+    background-color: #005fb8;
+    border: 2px solid #002a52;
+    border-radius: 15px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 600;
+}
+
+/* 按钮悬停效果 */
+QPushButton#OKButton:hover {
+    background-color: #034078;
+}
+
+/* 按钮按下效果 */
+QPushButton#OKButton:pressed {
+    background-color: #075cac;
+}

@@ -2,12 +2,39 @@ QLabel#H1 {
     font-size: 40px;
     font-weight: bold;
     color: #333333;
-    padding: 0, 0, 20, 0;
+    /* padding-left: 10px; */
+    padding-top: 30px;
+    /* padding-right: 7px; */
+    padding-bottom: 30px;
+
 }
 
 QLabel#H2 {
     font-size: 28px;
     font-weight: bold;
     color: #333333;
-    padding: 0, 0, 20, 0;
+    /* padding-left: 10px; */
+    padding-top: 24px;
+    /* padding-right: 7px; */
+    padding-bottom: 24px;
+}
+
+QLabel#P1 {
+    font-size: 40px;
+    font-weight: bold;
+    color: #333333;
+    /* padding-left: 10px; */
+    padding-top: 30px;
+    /* padding-right: 7px; */
+    padding-bottom: 10px;
+}
+
+QLabel#Tip {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333333;
+    /* padding-left: 10px; */
+    /* padding-top: 10px; */
+    /* padding-right: 7px; */
+    /* padding-bottom: 10px; */
 }
