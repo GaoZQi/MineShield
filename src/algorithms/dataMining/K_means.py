@@ -172,6 +172,7 @@ class KMeansTextClustering:
         return labels, reduced, X.toarray()
 
     def show_clusters(self, reduced_data, labels, ax, canvas):
+        ax.clear()
         scatter = ax.scatter(
             reduced_data[:, 0],
             reduced_data[:, 1],

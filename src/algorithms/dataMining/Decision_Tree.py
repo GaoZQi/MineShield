@@ -25,6 +25,7 @@ def decision_tree_classifier_chinese(
     cv_folds=5,
     figsize=(15, 12),
 ):
+    ax.clear()
     """
     中文可视化美化版决策树分类器：
     - 展示决策树结构（不保存图像）

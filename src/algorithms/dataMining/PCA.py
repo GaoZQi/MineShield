@@ -57,6 +57,7 @@ def plot_pca_scatter(file_path: str, ax, canvas):
         ax (matplotlib.axes.Axes): 用于绘图的坐标轴对象。
         canvas (FigureCanvas): Qt5 中的画布对象，绘图后需要调用 draw() 刷新。
     """
+    ax.clear()
     # 1. 读取并标准化
     df = pd.read_csv(file_path, encoding="utf-8")
     scaler = StandardScaler()

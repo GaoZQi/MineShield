@@ -41,6 +41,7 @@ def draw_bubble_chart(rules, ax, canva):
 
 
 def run(file_path, ax, canva):
+    ax.clear()
     # 读取卖菜交易数据集
     df = pd.read_csv(file_path)
 

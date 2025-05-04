@@ -21,10 +21,13 @@ from algorithms.dataMining.Apriori import run as Apriori
 from algorithms.dataMining.PCA import plot_pca_scatter as PCA
 
 
-# def PCA(filepath, ax, canva): ...
-def GMM(filepath, ax, canva): ...
-def AgglomerativeClustering(filepath, ax, canva): ...
+from algorithms.dataMining.GMM import (
+    GMMClustering as GMM,
+)
 
+from algorithms.dataMining.Agglomerative_Clustering import (
+    AgglomerativeClusteringPredict as AgglomerativeClustering,
+)
 
 from algorithms.dataMining.Bayes import naive_bayes_classifier as Bayes
 

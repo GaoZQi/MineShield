@@ -22,6 +22,7 @@ def predict_content_length_from_csv(
     - mse: float，均方误差
     """
     # 读取数据
+    ax.clear()
     df = pd.read_csv(csv_path, encoding=encoding)
     df = df.dropna(subset=["title", "content"])
 

@@ -8,7 +8,15 @@ import numpy as np
 
 
 class AgglomerativeClusteringPredict:
-    def __init__(self, model_file, scaler_file, umap_file, test_data_path):
+    def __init__(
+        self,
+        test_data_path,
+        ax,
+        canvas,
+        model_file="../res/model/Agglomerative_Clustering/agglomerative_attack_detection_model.pkl",
+        scaler_file="../res/model/Agglomerative_Clustering/agglomerative_scaler.pkl",
+        umap_file="../res/model/Agglomerative_Clustering/agglomerative_umap.pkl",
+    ):
         self.model_file = model_file
         self.scaler_file = scaler_file
         self.umap_file = umap_file
@@ -32,6 +40,7 @@ class AgglomerativeClusteringPredict:
             9: "Probe Attack",
             10: "Probe Attack",
         }
+        self.run(ax, canvas)
 
     def load_model(self):
         """加载训练好的聚类模型、标准化器和UMAP模型"""
@@ -120,7 +129,8 @@ class AgglomerativeClusteringPredict:
         # 使用UMAP进行降维
         self.X_test_umap = self.umap.transform(self.X_test_scaled)
 
-    def predict_and_plot(self):
+    def predict_and_plot(self, ax, canvas):
+        ax.clear()
         """使用层次聚类进行预测并可视化结果"""
         # 使用层次聚类进行预测
         self.test_labels = self.agglomerative.fit_predict(self.X_test_umap)
@@ -145,29 +155,32 @@ class AgglomerativeClusteringPredict:
                 edgecolors="black",
             )
 
-        plt.title("Agglomerative Clustering on Test Set")
-        plt.xlabel("UMAP Component 1")
-        plt.ylabel("UMAP Component 2")
-        plt.legend(loc="upper right", title="Cluster Labels")
-        plt.show()
+        ax.set_title("Agglomerative Clustering on Test Set")
+        ax.set_xlabel("UMAP Component 1")
+        ax.set_ylabel("UMAP Component 2")
+        anext.legend(loc="upper right", title="Cluster Labels")
+        canvas.draw()
+
+    def run(self, ax, canvas):
+        ax.clear()
+        """运行聚类预测和可视化"""
+        # 加载模型和数据
+        self.load_model()
+        self.load_and_preprocess_data()
+
+        # 预测并可视化
+        self.predict_and_plot(ax, canvas)
 
 
 if __name__ == "__main__":
-    model_file = "../../res/model/agglomerative_attack_detection_model.pkl"
-    scaler_file = "../../res/model/agglomerative_scaler.pkl"
-    umap_file = "../../res/model/agglomerative_umap.pkl"
-    test_data_path = "../../res/data/ac_train"
+    model_file = "../../../res/model/Agglomerative_Clustering/agglomerative_attack_detection_model.pkl"
+    scaler_file = "../../../res/model/Agglomerative_Clustering/agglomerative_scaler.pkl"
+    umap_file = "../../../res/model/Agglomerative_Clustering/agglomerative_umap.pkl"
+    test_data_path = "../../../res/data/8 Agglomerative_Clustering/ac_train.csv"
 
     agglomerative_predict = AgglomerativeClusteringPredict(
+        test_data_path=test_data_path,
         model_file=model_file,
         scaler_file=scaler_file,
         umap_file=umap_file,
-        test_data_path=test_data_path,
     )
-
-    # 加载模型和数据
-    agglomerative_predict.load_model()
-    agglomerative_predict.load_and_preprocess_data()
-
-    # 预测并可视化
-    agglomerative_predict.predict_and_plot()

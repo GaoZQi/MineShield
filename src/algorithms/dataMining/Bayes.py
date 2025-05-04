@@ -21,6 +21,7 @@ def naive_bayes_classifier(
     encoding="utf-8",
     sep=";",
 ):
+    ax.clear()
     """
     参数：
     - csv_path：CSV 文件路径

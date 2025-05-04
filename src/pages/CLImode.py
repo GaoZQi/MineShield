@@ -30,7 +30,7 @@ from widget.FluentListWidget import FluentListWidget
 
 class ExampleTab(RoundWidget):
 
-    def __init__(self, tab_name="Example"):
+    def __init__(self, tab_name="Example", func_name="Example", script_url=""):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统 - 攻击检测")
         self.setBackgroundColor(QColor(250, 250, 250, 200))
@@ -44,6 +44,10 @@ class ExampleTab(RoundWidget):
         title_label.setObjectName("H1")
         layout.addWidget(title_label)
 
+        tip_label = QLabel(func_name)
+        tip_label.setObjectName("H2")
+        layout.addWidget(title_label)
+
         # 输入框：日志文件路径
         log_path_input = QLineEdit()
         log_path_input.setPlaceholderText("请输入待检测文件路径")
@@ -51,19 +55,15 @@ class ExampleTab(RoundWidget):
 
         # 浏览按钮
         browse_button = QPushButton("浏览...")
-        # browse_button.clicked.connect(lambda: self.browse_file(log_path_input))
+        browse_button.clicked.connect(lambda: self.browse_file(log_path_input))
         layout.addWidget(browse_button)
 
         # 开始检测按钮
         start_button = QPushButton("开始检测")
-        # start_button.clicked.connect()
+        start_button.clicked.connect(
+            lambda: self.start_detection(script_url, log_path_input.text())
+        )
         layout.addWidget(start_button)
-
-        # 使用 RoundWidget 优化回显框
-        result_display_widget = RoundWidget(
-            radius=10, color=QColor(255, 255, 255)
-        )  # 设置圆角和背景色
-        result_layout = QVBoxLayout(result_display_widget)
 
         # 显示结果的文本框
         result_display = QTextEdit()
@@ -74,6 +74,59 @@ class ExampleTab(RoundWidget):
         self.log_path_input = log_path_input
 
         self.setLayout(layout)
+
+    def browse_file(self, log_path_input):
+        """打开文件对话框选择日志文件"""
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "选择要上传的文件", "", "文件 (*)"
+        )
+        if file_path:
+            log_path_input.setText(file_path)
+
+    def start_detection(self, script_name, log_file_path):
+        """启动后端 Python 文件进行检测"""
+        if not log_file_path:
+            return
+
+        current_widget = self.stack.currentWidget()
+
+        current_widget.result_display.clear()
+
+        # 获取 XGBoost.py 文件所在的路径
+        script_dir = os.path.dirname(os.path.abspath(f"algorithms/{script_name}"))
+
+        # 启动后端 Python 文件进行检测
+        process = QProcess(self)
+        process.readyReadStandardOutput.connect(lambda: self.handle_stdout(process))
+        process.readyReadStandardError.connect(lambda: self.handle_stderr(process))
+
+        # 设置工作目录为 XGBoost.py 所在的目录
+        process.setWorkingDirectory(script_dir)
+
+        # 使用conda环境中的Python解释器
+        python_executable = "C:\\Users\\GAiLO\\anaconda3\\envs\\python-310\\python.exe"
+
+        # 启动后端 Python 脚本
+        command = [python_executable, script_name]
+        process.start(command[0], command[1:])
+
+        # 等待进程启动并模拟输入路径
+        process.waitForStarted()
+
+        # 模拟输入日志文件路径
+        process.write(log_file_path.encode() + b"\n")  # 模拟按下回车键
+
+    def handle_stdout(self, process):
+        """捕获并显示标准输出"""
+        data = process.readAllStandardOutput().data().decode()
+        current_widget = self.stack.currentWidget()
+        current_widget.result_display.append(data)
+
+    def handle_stderr(self, process):
+        """捕获并显示标准错误输出"""
+        error_data = process.readAllStandardError().data().decode()
+        current_widget = self.stack.currentWidget()
+        current_widget.result_display.append(f"错误信息：\n{error_data}")
 
 
 if __name__ == "__main__":
