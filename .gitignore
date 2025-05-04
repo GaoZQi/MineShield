@@ -11,5 +11,3 @@ wheels/
 
 # VS Code plugins
 .history/
-
-res/model/Random_forest/Random_Forest_model.pkl
