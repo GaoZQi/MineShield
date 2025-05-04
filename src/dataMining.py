@@ -167,7 +167,7 @@ class DataMiningTab(RoundWidget):
             return
         import csv
 
-        with open(self.dataURL, newline="", encoding="utf-8") as csvfile:
+        with open(self.dataURL, newline="", encoding="utf-8-sig") as csvfile:
             reader = csv.reader(csvfile)
             rows = list(reader)
 

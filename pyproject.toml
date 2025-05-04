@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "chardet>=5.2.0",
     "joblib>=1.4.2",
     "matplotlib>=3.10.1",
     "mlxtend>=0.23.4",
