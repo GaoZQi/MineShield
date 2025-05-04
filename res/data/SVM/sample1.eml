@@ -1,0 +1,11 @@
+From: hacker@phishing.com
+To: user@domain.com
+Subject: Reset Your Password
+MIME-Version: 1.0
+Content-Type: text/html
+
+<html>
+  <body>
+    <p>Your account is at risk. <a href="http://fake-reset.com">Click here</a> to reset your password now.</p>
+  </body>
+</html>

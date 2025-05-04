@@ -2,8 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import joblib
 from sklearn.mixture import GaussianMixture
-
-import umap
 import pandas as pd
 
 
