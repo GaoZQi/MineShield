@@ -1,6 +1,8 @@
 import pandas as pd
 import joblib
 from sklearn.metrics import classification_report, confusion_matrix
+import warnings
+warnings.filterwarnings("ignore")
 
 class OneClassSVMPredictor:
     def __init__(self, model_path='../../res/model/One-Class_SVM_model.pkl'):

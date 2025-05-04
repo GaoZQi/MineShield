@@ -149,7 +149,7 @@ dependencies = [
 ]
 ```
 
-## 数据挖掘
+## 数据挖掘 （已解决）
 
 ### Dimensionality_Reduction
 
@@ -157,13 +157,13 @@ dependencies = [
 
 ![alt text](assets/image.png)
 
-### Linear_Regression
+### Linear_Regression（已解决）
 
 数据集有乱码
 
 ![alt text](assets/image-1.png)
 
-### K-Means
+### K-Means （已解决）
 
 未提供数据集，根据代码选择使用上次作业数据测试。
 

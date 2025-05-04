@@ -80,6 +80,7 @@ class DataMiningTab(RoundWidget):
         data_URL_layout = QHBoxLayout()
         self.dataURLText = QLineEdit()
         self.dataURLText.setPlaceholderText("数据集路径")
+        self.dataURLText.setReadOnly(True)
         data_URL_layout.addWidget(self.dataURLText)
         choose_button = QPushButton("选择数据集")
         choose_button.setObjectName("chooseButton")

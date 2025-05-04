@@ -3,7 +3,7 @@ QPushButton {
     background-color: #fdfdfd;
     border: 2px solid #f1f1f1;
     border-radius: 15px;
-    padding: 10px 20px;
+    padding: 12px;
     color: #333333;
     font-weight: 600;
 }
@@ -23,7 +23,7 @@ QPushButton#OKButton {
     background-color: #005fb8;
     border: 2px solid #002a52;
     border-radius: 15px;
-    padding: 10px 20px;
+    padding: 12px;
     color: white;
     font-weight: 600;
 }

@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt
 from QSSLoader import QSSLoader
 from PyQt5.QtGui import QFont, QColor, QPainter, QPen
+from widget.RoundComboBox import RoundComboBox
 
 
 class alorgorithmDialog(QDialog):
@@ -34,7 +35,7 @@ class alorgorithmDialog(QDialog):
         layout.addWidget(label)
 
         # 下拉列表
-        self.combex = QComboBox(self)
+        self.combex = RoundComboBox(self)
         if items:
             self.combex.addItems(items)
         layout.addWidget(self.combex)
@@ -95,5 +96,24 @@ if __name__ == "__main__":
     app.setStyleSheet(QSSLoader.load_qss_files("../style"))
     app.setFont(QFont("Microsoft YaHei UI", 12))
     dialog = alorgorithmDialog()
+
+    algorithms = {
+        "Dimensionality Reduction": "DimensionalityReduction",
+        "Linear Regression": "LinearRegression",
+        "K-Means": "Kemeans",
+        "Random-Forest": "RandomForest",
+        "Isolation Forest": "IsolationForest",
+        "Apriori": "Apriori",
+        "PCA": "PCA",
+        "GMM": "GMM",
+        "Agglomerative Clustering": "AgglomerativeClustering",
+        "Bayes": "Bayes",
+        "Decision Tree": "DecisionTree",
+    }
+    items = list(algorithms.keys())
+    dialog.combex.addItems(items)
+    dialog.setWindowTitle("选择算法")
+    dialog.setWindowModality(Qt.ApplicationModal)  # 设置为模态窗口
+    dialog.setAttribute(Qt.WA_DeleteOnClose)  # 关闭时删除窗口
     dialog.show()
     sys.exit(app.exec_())
