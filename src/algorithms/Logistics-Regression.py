@@ -1,6 +1,6 @@
 import joblib
-
-
+import warnings
+warnings.filterwarnings("ignore")
 def get_ngrams(query) -> list:
     tempQuery = str(query)
     ngrams = []

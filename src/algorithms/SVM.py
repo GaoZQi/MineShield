@@ -5,7 +5,8 @@ import nltk
 import urlextract
 from html import unescape
 from email import parser, policy
-
+import warnings
+warnings.filterwarnings("ignore")
 class Model:
     def __init__(self):
         """
@@ -90,8 +91,6 @@ class Model:
         return bool(result[0])
 
 if __name__ == '__main__':
-    nltk.download('stopwords')
-    nltk.download('punkt_tab')
     path = input("请输入邮件文件路径：")  # 示例输入：trec07p/data/inmail.1
     model = Model()
     result = model.predict(path)
