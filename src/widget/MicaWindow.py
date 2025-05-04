@@ -8,7 +8,7 @@ class MicaWindow(QtWidgets.QMainWindow):
         super().__init__()
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.setGeometry(100, 100, 300, 200)
-        ApplyMica(self.winId(), MicaTheme.LIGHT, MicaStyle.DEFAULT)
+        ApplyMica(self.winId(), MicaTheme.LIGHT, MicaStyle.ALT)
         self.setContentsMargins(0, 0, 0, 0)
 
 

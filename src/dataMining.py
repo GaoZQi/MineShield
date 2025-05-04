@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (
     QTableWidgetItem,
     QTableWidget,
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QFont, QColor
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
@@ -30,7 +30,9 @@ from algorithms import *
 class DataMiningTab(RoundWidget):
     def __init__(self):
         super().__init__()
-        self.setBackgroundColor(QColor(253, 253, 253, 190))
+        self.setBackgroundColor(QColor(250, 250, 250, 200))
+        self.setRadius(20)
+        self.setBorder(QColor(238, 238, 238), 2)
         self.setContentsMargins(36, 0, 36, 36)  # 设置内边距
         self.algorithms = {
             "Dimensionality Reduction": DimensionalityReduction,
@@ -97,9 +99,26 @@ class DataMiningTab(RoundWidget):
         self.run_button.setEnabled(False)
         self.run_button.clicked.connect(self.run_algorithm)
 
-        # Matplotlib canvas for visualization
+        # 在类初始化部分修改画布创建代码
+        self.canvas_container = RoundWidget(radius=20, color=QColor(255, 255, 255, 200))
+        self.canvas_container.setContentsMargins(0, 0, 0, 0)
+
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvas(self.figure)
+        self.canvas.setStyleSheet("background: transparent;")
+
+        # 设置Matplotlib图形背景为透明
+        self.figure.patch.set_alpha(0)
+
+        # 将画布添加到容器
+        canvas_layout = QVBoxLayout(self.canvas_container)
+        canvas_layout.setContentsMargins(0, 0, 0, 0)
+        canvas_layout.addWidget(self.canvas)
+
+        # 在界面布局中使用容器代替原画布
+        # Matplotlib canvas for visualization
+        # self.figure, self.ax = plt.subplots()
+        # self.canvas = FigureCanvas(self.figure)
 
         config_layout = QVBoxLayout()
         config_layout.addLayout(alorgorithm_layout)
@@ -113,7 +132,8 @@ class DataMiningTab(RoundWidget):
         pic_tip.setObjectName("H1")
         pic_layout = QVBoxLayout()
         pic_layout.addWidget(pic_tip)
-        pic_layout.addWidget(self.canvas, stretch=3)
+        # pic_layout.addWidget(self.canvas, stretch=3)
+        pic_layout.addWidget(self.canvas_container, stretch=3)
         main_layout.addLayout(config_layout, 2)  # 左边3份
         main_layout.addSpacing(20)  # 左右间距
         main_layout.addLayout(pic_layout, 2)  # 右边2份
@@ -121,22 +141,49 @@ class DataMiningTab(RoundWidget):
         main_layout.setStretch(1, 2)  # 第二个子布局（右边）权重2
         self.setLayout(main_layout)
 
+    def showEvent(self, event):
+        super().showEvent(event)
+        QApplication.postEvent(self, QEvent(QEvent.UpdateRequest))  # 触发立即重绘
+
     def run_algorithm(self):
-        # 获取当前选择的算法
         selected_algorithm = self.algorithm_label.text().replace(self.tip, "")
-        if selected_algorithm not in self.algorithms:
+        if not selected_algorithm or not self.dataURL:
             return
-        # 获取算法函数
-        algorithm_func = self.algorithms[selected_algorithm]
-        # 运行算法并获取结果
+
+        # 清除旧图形
         self.figure.clf()
         self.ax = self.figure.add_subplot(111)
 
-        algorithm_func(self.dataURL, self.ax, self.canvas)
-        # x = np.random.rand(100)
-        # y = np.random.rand(100)
-        # self.ax.scatter(x, y, c="blue", alpha=0.5)
-        # self.canvas.draw()
+        # 添加加载动画
+        self.ax.text(
+            0.5,
+            0.5,
+            "正在处理中...",
+            ha="center",
+            va="center",
+            fontsize=20,
+            color="gray",
+        )
+        self.canvas.draw()
+
+        # 异步执行耗时操作
+        QApplication.processEvents()  # 立即处理UI事件
+
+        try:
+            algorithm_func = self.algorithms[selected_algorithm]
+            algorithm_func(self.dataURL, self.ax, self.canvas)
+
+            # 强制界面更新
+            self.canvas.draw()
+            self.canvas.update()
+            self.update()  # 更新整个widget
+        except Exception as e:
+            self.figure.clf()
+            self.ax = self.figure.add_subplot(111)
+            self.ax.text(
+                0.5, 0.5, f"Error: {str(e)}", ha="center", va="center", color="red"
+            )
+            self.canvas.draw()
 
     def show_popup(self):
         dialog = PopupDialog(

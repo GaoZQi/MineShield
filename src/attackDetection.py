@@ -12,20 +12,32 @@ from PyQt5.QtWidgets import (
     QStackedWidget,
 )
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QTextEdit, QFileDialog, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import (
+    QLineEdit,
+    QPushButton,
+    QTextEdit,
+    QFileDialog,
+    QVBoxLayout,
+    QHBoxLayout,
+)
 from PyQt5.QtCore import QProcess
 from widget.RoundWidget import RoundWidget
+from widget.FluentListWidget import FluentListWidget
 
-class AttackDetectionTab(QWidget):
+
+class AttackDetectionTab(RoundWidget):
 
     def __init__(self):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统 - 攻击检测")
-        self.resize(900, 600)
+        self.setBackgroundColor(QColor(250, 250, 250, 200))
+        self.setRadius(20)
+        self.setBorder(QColor(238, 238, 238), 2)
+        self.setContentsMargins(0, 0, 0, 0)
 
         # 左侧导航列表
-        self.list_widget = QListWidget()
-        self.list_widget.setFrameShape(QListWidget.NoFrame)
+        self.list_widget = FluentListWidget()
+        self.list_widget.setFrameShape(FluentListWidget.NoFrame)
 
         # 添加导航项
         for idx, text in enumerate(
@@ -36,7 +48,7 @@ class AttackDetectionTab(QWidget):
                 "恶意扫描数据包检测",
                 "DDoS 攻击检测",
                 "IDS入侵检测",
-                "MLP",
+                "恶意数据包检测",
                 "端口扫描攻击检测",
                 "SQL注入攻击检测",
                 "XSS攻击检测",
@@ -84,11 +96,15 @@ class AttackDetectionTab(QWidget):
 
         # 开始检测按钮
         start_button = QPushButton("开始检测")
-        start_button.clicked.connect(lambda: self.start_detection(script_name, log_path_input.text()))
+        start_button.clicked.connect(
+            lambda: self.start_detection(script_name, log_path_input.text())
+        )
         layout.addWidget(start_button)
 
         # 使用 RoundWidget 优化回显框
-        result_display_widget = RoundWidget(radius=10, color=QColor(255, 255, 255))  # 设置圆角和背景色
+        result_display_widget = RoundWidget(
+            radius=10, color=QColor(255, 255, 255)
+        )  # 设置圆角和背景色
         result_layout = QVBoxLayout(result_display_widget)
 
         # 显示结果的文本框
@@ -102,7 +118,9 @@ class AttackDetectionTab(QWidget):
 
     def browse_file(self, log_path_input):
         """打开文件对话框选择日志文件"""
-        file_path, _ = QFileDialog.getOpenFileName(self, "选择要上传的文件", "", "文件 (*)")
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "选择要上传的文件", "", "文件 (*)"
+        )
         if file_path:
             log_path_input.setText(file_path)
 
@@ -127,7 +145,7 @@ class AttackDetectionTab(QWidget):
         process.setWorkingDirectory(script_dir)
 
         # 使用conda环境中的Python解释器
-        python_executable = 'C:\\Users\\GAiLO\\anaconda3\\envs\\python-310\\python.exe'
+        python_executable = "C:\\Users\\GAiLO\\anaconda3\\envs\\python-310\\python.exe"
 
         # 启动后端 Python 脚本
         command = [python_executable, script_name]
@@ -157,10 +175,15 @@ class AttackDetectionTab(QWidget):
 
 
 if __name__ == "__main__":
+    from QSSLoader import QSSLoader
+    from PyQt5.QtGui import QFont
+
     app = QApplication(sys.argv)
+    app.setFont(QFont("Microsoft YaHei UI", 12))
+    app.setStyleSheet(QSSLoader.load_qss_files("../style"))
     main_window = QMainWindow()
     main_window.setWindowTitle("Data Mining and Attack Detection System")
-    main_window.setGeometry(100, 100, 900, 600)
+    main_window.setGeometry(100, 100, 1650, 1000)
 
     data_tab = AttackDetectionTab()
     main_window.setCentralWidget(data_tab)

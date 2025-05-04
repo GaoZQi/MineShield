@@ -30,9 +30,13 @@ class alorgorithmDialog(QDialog):
         # layout.setSpacing(15)
 
         # 弹窗内容标签
-        label = QLabel("数据挖掘算法", self)
+        label = QLabel("设置数据挖掘算法", self)
         label.setObjectName("P1")
         layout.addWidget(label)
+
+        tip = QLabel("算法：", self)
+        tip.setObjectName("P2")
+        layout.addWidget(tip)
 
         # 下拉列表
         self.combex = RoundComboBox(self)
@@ -56,8 +60,9 @@ class alorgorithmDialog(QDialog):
         btn_layout.setSpacing(10)
 
         # btn_layout.addStretch()
+        layout.addSpacing(30)  # 添加间距
         layout.addLayout(btn_layout)
-        layout.setSpacing(50)
+        layout.setSpacing(20)
         layout.setAlignment(Qt.AlignTop)  # 设置对齐方式为顶部对齐
 
     def on_ok(self):

@@ -1,8 +1,6 @@
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtGui import QFont, QColor
-from PyQt5.QtCore import Qt, QSize, QRectF
-from PyQt5.QtGui import QPainter, QPen
-from PyQt5.QtGui import QPainterPath
+from PyQt5.QtWidgets import QPushButton, QButtonGroup
+from PyQt5.QtGui import QFont, QColor, QPainter, QPainterPath, QPen
+from PyQt5.QtCore import Qt, QRectF
 
 
 class TabButton(QPushButton):
@@ -10,59 +8,46 @@ class TabButton(QPushButton):
         super().__init__(text, parent)
         self.setCursor(Qt.PointingHandCursor)
 
-        # 颜色配置
-        self.normal_bg = QColor(245, 245, 245, 190)
-        self.hover_bg = QColor("#e0e0e0")
-        self.pressed_bg = QColor("#bdbdbd")
-        self.checked_bg = QColor(253, 253, 253, 190)
+        # 背景颜色配置
+        self.normal_bg = QColor(0, 0, 0, 0)  # 无背景
+        self.hover_bg = QColor("#e0e0e0")  # 悬停时背景
+        self.pressed_bg = QColor("#bdbdbd")  # 按下时背景
+        self.checked_bg = QColor(253, 253, 253, 190)  # 选中时背景
+
+        # 边框颜色配置（仅选中时显示）
+        self.checked_border = QColor("#e0e0e0")
+
+        # 文本颜色配置
         self.text_color = QColor("#424242")
-        self.checked_text_color = Qt.black
+        self.checked_text_color = QColor("#000000")
 
-        # 尺寸配置
-        self.radius = 15  # 顶部圆角半径
-        self.padding = 0
+        # 圆角半径
+        self.radius = 15
 
-        # 控件设置
-        self.setFont(QFont("Microsoft YaHei", 12, weight=QFont.Bold))
+        # 字体及尺寸
         self.setMinimumSize(100, 55)
         self.setCheckable(True)
         self.setStyleSheet("border: none; background: transparent;")
         self.setAttribute(Qt.WA_Hover)
+        self.setFixedHeight(60)
 
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
+        painter.setRenderHint(QPainter.Antialiasing, True)  # 保持开启
+        painter.setRenderHint(QPainter.SmoothPixmapTransform, False)  # 关闭图片平滑
+        # 使用整数像素对齐（关键修改1）
+        rect = QRectF(0.5, 0.5, self.width() - 1, self.height() - 1)
 
-        # 创建顶部圆角底部直角的路径
         path = QPainterPath()
-        rect = QRectF(0, 0, self.width(), self.height())
-
-        # 顶部左圆角
-        path.moveTo(rect.left(), rect.top() + self.radius)
-        path.arcTo(rect.left(), rect.top(), self.radius * 2, self.radius * 2, 180, -90)
-
-        # 顶部右圆角
-        path.lineTo(rect.right() - self.radius, rect.top())
-        path.arcTo(
-            rect.right() - self.radius * 2,
-            rect.top(),
-            self.radius * 2,
-            self.radius * 2,
-            90,
-            -90,
-        )
-
-        # 底部直角
-        path.lineTo(rect.right(), rect.bottom())
-        path.lineTo(rect.left(), rect.bottom())
-        path.closeSubpath()
+        path.addRoundedRect(rect, self.radius, self.radius)
 
         # 状态判断
         is_checked = self.isChecked()
         is_hover = self.underMouse()
         is_pressed = self.isDown()
 
-        # 背景颜色
+        # 选择背景颜色
         if is_checked:
             bg_color = self.checked_bg
         elif is_pressed:
@@ -72,41 +57,69 @@ class TabButton(QPushButton):
         else:
             bg_color = self.normal_bg
 
-        # 绘制背景
+        # 填充背景
         painter.fillPath(path, bg_color)
 
-        # 绘制文字
+        # 若选中，则绘制浅灰色边框
+        if is_checked:
+            pen = QPen(self.checked_border)
+            pen.setWidth(2)
+            pen.setCosmetic(True)  # 固定线宽不受缩放影响
+            painter.setPen(pen)
+            painter.drawPath(path)
+        else:
+            painter.setPen(Qt.NoPen)
+
+        # 绘制文字（关键修改3）
         text_color = self.checked_text_color if is_checked else self.text_color
         painter.setPen(text_color)
 
-        # 文字区域（向下偏移2px保证视觉居中）
-        text_rect = QRectF(
-            self.padding, 2, self.width() - self.padding * 2, self.height()  # 向下微调
-        )
-        painter.drawText(text_rect, Qt.AlignCenter, self.text())
+        # 使用精确的文本位置计算
+        text_rect = QRectF(0, 0, self.width(), self.height())
+        font_metrics = painter.fontMetrics()
+        text_width = font_metrics.horizontalAdvance(self.text())
+        text_height = font_metrics.height()
+        text_top = (self.height() - text_height) / 2 + font_metrics.ascent()
 
-        # # 选中状态指示条（顶部）
-        # if is_checked:
-        #     indicator = QRectF(0, 0, self.width(), 3)
-        #     painter.fillRect(indicator, self.checked_bg)
+        painter.drawText(
+            int((self.width() - text_width) / 2), int(text_top), self.text()
+        )
 
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+    from PyQt5.QtWidgets import (
+        QApplication,
+        QMainWindow,
+        QVBoxLayout,
+        QWidget,
+        QStackedWidget,
+        QHBoxLayout,
+        QListWidget,
+        QListWidgetItem,
+        QTextEdit,
+        QLineEdit,
+        QPushButton,
+    )
+    from PyQt5.QtGui import QColor, QFont
+    from PyQt5.QtCore import Qt
 
     app = QApplication(sys.argv)
     main_window = QMainWindow()
-    main_window.setWindowTitle("Tab Button Example")
-    main_window.setGeometry(100, 100, 300, 200)
+    main_window.setWindowTitle("TabButton Example")
+    main_window.setGeometry(100, 100, 800, 600)
+    button = TabButton("Tab 1")
+    button.setChecked(True)
+    button2 = TabButton("Tab 2")
+    button3 = TabButton("Tab 3")
+    center = QWidget()
+    main = QHBoxLayout()
+    main.addWidget(button)
+    main.addWidget(button2)
+    main.addWidget(button3)
+    center.setLayout(main)
 
-    central_widget = QWidget()
-    layout = QVBoxLayout(central_widget)
+    main_window.setCentralWidget(center)
 
-    tab_button = TabButton("Tab 1")
-    layout.addWidget(tab_button)
-
-    main_window.setCentralWidget(central_widget)
     main_window.show()
-
     sys.exit(app.exec_())

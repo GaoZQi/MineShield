@@ -1,0 +1,32 @@
+QListWidget {
+    /* border: 1px solid gray; */
+    background: #f0f0f0;
+    color: #9299a1;
+    margin: 10px;
+    min-width: 250px;
+    max-width: 300px;
+    font-size: 20px;
+    font-weight: 600;
+    outline: none;
+}
+
+QListWidget::item {
+    height: 50px;
+    /* 设置最小高度 */
+    padding: 5px 10px;
+    /* 内边距：上下5px，左右10px */
+    border-radius: 20px;
+    margin: 5px 10px;
+    border: none;
+    text-align: center;
+}
+
+QListWidget::item:hover {
+    show-decoration-selected: 1;
+    background: skyblue;
+}
+
+QListWidget::item:selected {
+    background: #ffffff;
+    color: black;
+}

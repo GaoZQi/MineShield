@@ -26,15 +26,15 @@ QLabel#P1 {
     /* padding-left: 10px; */
     padding-top: 30px;
     /* padding-right: 7px; */
-    padding-bottom: 10px;
+    padding-bottom: 24px;
 }
 
-QLabel#Tip {
-    font-size: 12px;
+QLabel#P2 {
+    font-size: 28px;
     font-weight: bold;
     color: #333333;
-    /* padding-left: 10px; */
-    /* padding-top: 10px; */
+    padding-left: 5px;
+    padding-top: 16px;
     /* padding-right: 7px; */
-    /* padding-bottom: 10px; */
+    padding-bottom: 12px;
 }
