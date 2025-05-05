@@ -19,11 +19,11 @@ class alorgorithmDialog(QDialog):
         # 隐藏标题栏
         # 初始化返回值
         self.selected_algorithm = choose
-        self.setContentsMargins(10, 10, 10, 10)
+        self.setContentsMargins(5, 5, 5, 5)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
         self.setAttribute(Qt.WA_TranslucentBackground)
         # 设置弹窗固定大小
-        self.setFixedWidth(600)
+        self.setFixedWidth(300)
         # 主布局
         layout = QVBoxLayout(self)
         # layout.setContentsMargins(20, 20, 20, 20)
@@ -57,12 +57,12 @@ class alorgorithmDialog(QDialog):
         ok_btn.setObjectName("OKButton")
         ok_btn.clicked.connect(self.on_ok)
         btn_layout.addWidget(ok_btn)
-        btn_layout.setSpacing(10)
+        btn_layout.setSpacing(5)
 
         # btn_layout.addStretch()
-        layout.addSpacing(30)  # 添加间距
+        layout.addSpacing(15)  # 添加间距
         layout.addLayout(btn_layout)
-        layout.setSpacing(20)
+        layout.setSpacing(10)
         layout.setAlignment(Qt.AlignTop)  # 设置对齐方式为顶部对齐
 
     def on_ok(self):
@@ -81,7 +81,7 @@ class alorgorithmDialog(QDialog):
         background_color = QColor(255, 255, 255)
         painter.setBrush(background_color)
         painter.setPen(Qt.NoPen)
-        painter.drawRoundedRect(rect, 15, 15)
+        painter.drawRoundedRect(rect, 10, 10)
 
         # 绘制边框
         border_color = QColor(200, 200, 200)
@@ -90,7 +90,7 @@ class alorgorithmDialog(QDialog):
         painter.setPen(pen)
         painter.setBrush(Qt.NoBrush)
         inner_rect = rect.adjusted(1, 1, -1, -1)
-        painter.drawRoundedRect(inner_rect, 15, 15)
+        painter.drawRoundedRect(inner_rect, 10, 10)
 
 
 if __name__ == "__main__":

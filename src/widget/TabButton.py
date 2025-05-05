@@ -13,7 +13,7 @@ class TabButton(QPushButton):
         self.hover_bg = QColor("#e0e0e0")  # 悬停时背景
         self.pressed_bg = QColor("#bdbdbd")  # 按下时背景
         self.checked_bg = QColor(253, 253, 253, 190)  # 选中时背景
-
+        self.setContentsMargins(3, 3, 3, 3)  # 去除按钮内边距
         # 边框颜色配置（仅选中时显示）
         self.checked_border = QColor("#e0e0e0")
 
@@ -22,14 +22,15 @@ class TabButton(QPushButton):
         self.checked_text_color = QColor("#000000")
 
         # 圆角半径
-        self.radius = 15
+        self.radius = 10
 
         # 字体及尺寸
-        self.setMinimumSize(100, 55)
+        self.setMinimumSize(50, 25)
         self.setCheckable(True)
-        self.setStyleSheet("border: none; background: transparent;")
+        self.setStyleSheet("border: none; background: transparent; margin: none;")
         self.setAttribute(Qt.WA_Hover)
-        self.setFixedHeight(60)
+        self.setFixedHeight(30)
+        self.setFont(QFont("微软雅黑", 11))
 
     def paintEvent(self, event):
         painter = QPainter(self)

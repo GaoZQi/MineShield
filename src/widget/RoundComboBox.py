@@ -8,7 +8,7 @@ from PyQt5.QtSvg import QSvgRenderer
 class ComboBoxItemDelegate(QStyledItemDelegate):
     def sizeHint(self, option, index):
         size = super().sizeHint(option, index)
-        size.setHeight(60)  # 增加高度留出阴影空间
+        size.setHeight(30)  # 增加高度留出阴影空间
         return size
 
     def paint(self, painter, option, index):
@@ -25,10 +25,10 @@ class ComboBoxItemDelegate(QStyledItemDelegate):
         )
         painter.setBrush(bg_color)
         painter.setPen(Qt.NoPen)
-        painter.drawRoundedRect(original_rect, 15, 15)
+        painter.drawRoundedRect(original_rect, 10, 10)
 
         # 绘制文本
-        text_rect = original_rect.adjusted(25, 0, -15, 0)
+        text_rect = original_rect.adjusted(12, 0, -7, 0)
         painter.setPen(QColor("#1a1a1a"))
         painter.drawText(
             text_rect, Qt.AlignLeft | Qt.AlignVCenter, index.data(Qt.DisplayRole)
@@ -51,7 +51,7 @@ class RoundComboBox(QComboBox):
         self.renderer = QSvgRenderer(self.svg_data)
 
     def setup_styles(self):
-        self.setFixedHeight(60)
+        self.setFixedHeight(30)
         self.setStyleSheet(
             """
             QComboBox {
@@ -67,7 +67,7 @@ class RoundComboBox(QComboBox):
             QComboBox QAbstractItemView {
                 background-color: transparent;
                 border: 2px solid #f1f1f1;
-                border-radius: 15px;
+                border-radius: 10px;
                 outline: none;
             }
             /* 滚动条样式 */
@@ -79,7 +79,7 @@ class RoundComboBox(QComboBox):
             QScrollBar::handle:vertical {
                 background: #cccccc;
                 border-radius: 5px;
-                min-height: 30px;
+                min-height: 15px;
             }
             QScrollBar::add-line:vertical, 
             QScrollBar::sub-line:vertical {
@@ -101,17 +101,17 @@ class RoundComboBox(QComboBox):
         bg_rect = self.rect().adjusted(1, 1, -1, -1)
         painter.setBrush(QBrush(QColor("#fdfdfd")))
         painter.setPen(QPen(QColor("#f1f1f1"), 2))
-        painter.drawRoundedRect(bg_rect, 15, 15)
+        painter.drawRoundedRect(bg_rect, 10, 10)
 
         # 绘制当前选中项文本
-        text_rect = QRect(30, 0, self.width() - 70, self.height())
+        text_rect = QRect(15, 0, self.width() - 35, self.height())
         painter.setPen(QColor("#1a1a1a"))
         painter.drawText(text_rect, Qt.AlignLeft | Qt.AlignVCenter, self.currentText())
 
         # 绘制自定义SVG箭头
-        arrow_size = 24
+        arrow_size = 12
         arrow_rect = QRect(
-            self.width() - 45,
+            self.width() - 22,
             (self.height() - arrow_size) // 2,
             arrow_size,
             arrow_size,

@@ -17,13 +17,13 @@ class IconButton(QPushButton):
         self.hover_color = QColor("#e0e0e0")
         self.pressed_color = QColor("#c0c0c0")
         self.border_width = 2  # 可自由调整的边框宽度
-        self.radius = 10  # 圆角半径
+        self.radius = 5  # 圆角半径
 
         # 控件设置
         self.setFlat(True)
         self.setStyleSheet("border: none; background: transparent;")
         self.setAttribute(Qt.WA_Hover)  # 必须启用悬停检测
-        self.setIconSize(QSize(24, 24))
+        self.setIconSize(QSize(12, 12))
 
         # 加载SVG图标
         self.svg_icon = self.load_svg_icon(svg_data)
@@ -41,7 +41,7 @@ class IconButton(QPushButton):
 
     def sizeHint(self) -> QSize:
         """建议按钮尺寸"""
-        return QSize(48, 48)
+        return QSize(24, 24)
 
     def paintEvent(self, event):
         """自定义绘制实现"""

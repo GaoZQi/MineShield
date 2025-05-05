@@ -31,18 +31,18 @@ class CustomDelegate(QStyledItemDelegate):
 
             # 创建圆角矩形背景
             bg_rect = option.rect.adjusted(2, 2, -2, -2)
-            painter.drawRoundedRect(bg_rect, 15, 15)
+            painter.drawRoundedRect(bg_rect, 10, 10)
 
         # 绘制文本（四周保留15px边距）
         text = index.data(Qt.DisplayRole)
-        text_rect = option.rect.adjusted(15, 15, -15, -15)
+        text_rect = option.rect.adjusted(10, 10, -10, -10)
         painter.setPen(Qt.black)
         painter.drawText(text_rect, Qt.AlignCenter, text)
 
         painter.restore()
 
     def sizeHint(self, option, index):
-        return QSize(0, 80)  # 固定高度为60px
+        return QSize(0, 40)  # 固定高度为60px
 
 
 class FluentListWidget(QListWidget):
@@ -51,8 +51,8 @@ class FluentListWidget(QListWidget):
         self.setItemDelegate(CustomDelegate(self))
         self.setSpacing(0)
         self.init_style()
-        self.setMinimumWidth(250)
-        self.setMaximumWidth(300)
+        self.setMinimumWidth(175)
+        self.setMaximumWidth(200)
 
     def init_style(self):
         self.setStyleSheet(
@@ -61,14 +61,14 @@ class FluentListWidget(QListWidget):
                 background: transparent;
                 border: none;
                 outline: 0;
-                margin: 10px;
-                font-size: 20px;
+                margin: 0px;
+                font-size: 12px;
                 font-weight: 600;
             }
             QListWidget::item {
                 border: none;
-                margin: 5px 10px;
-                padding: 5px 10px;
+                margin: 2px 5px;
+                padding: 2px 5px;
             }
         """
         )
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # 添加示例项
     for i in range(5):
         item = QListWidgetItem(f"List Item {i+1}")
-        item.setSizeHint(QSize(0, 60))  # 确保项高度与代理一致
+        item.setSizeHint(QSize(0, 40))  # 确保项高度与代理一致
         list_widget.addItem(item)
 
     window.show()

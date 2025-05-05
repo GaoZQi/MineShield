@@ -2,10 +2,14 @@
 QPushButton {
     background-color: #fdfdfd;
     border: 2px solid #f1f1f1;
-    border-radius: 15px;
-    padding: 12px;
+    border-radius: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
     color: #333333;
     font-weight: 600;
+    /* font-size: 10px; */
 }
 
 /* 按钮悬停效果 */
@@ -22,8 +26,11 @@ QPushButton:pressed {
 QPushButton#OKButton {
     background-color: #005fb8;
     border: 2px solid #002a52;
-    border-radius: 15px;
-    padding: 12px;
+    border-radius: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
     color: white;
     font-weight: 600;
 }

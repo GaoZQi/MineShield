@@ -17,13 +17,15 @@ from attackDetection_1 import AttackDetectionTab
 from widget.RoundWidget import RoundWidget
 from widget.MicaWindow import MicaWindow
 from widget.TabButton import TabButton
+import sys
+import ctypes
 
 
 class MainWindow(MicaWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统")
-        self.setGeometry(100, 100, 1840, 800)
+        self.setGeometry(100, 100, 920, 600)
         self.setContentsMargins(5, 5, 5, 5)  # 设置内边距
 
         # —— STEP 1: 创建堆栈和按钮组 ——
@@ -40,10 +42,11 @@ class MainWindow(MicaWindow):
         self.stack.addWidget(self.attack_tab)  # index 1
 
         # —— STEP 3: 创建按钮并加入按钮组 ——
-        tab_bar = RoundWidget(radius=20, color=QColor(249, 249, 249, 200))
+        tab_bar = RoundWidget(radius=13, color=QColor(249, 249, 249, 200))
         tab_bar.setBorder(QColor(238, 238, 238), 0)
         tab_bar.setContentsMargins(0, 0, 0, 0)  # 新增：去除按钮容器边距
         h_layout = QHBoxLayout(tab_bar)
+        h_layout.setContentsMargins(2, 2, 2, 2)
 
         for idx, (text, widget) in enumerate(
             [("数据挖掘", self.data_tab), ("攻击检测", self.attack_tab)]
@@ -59,7 +62,7 @@ class MainWindow(MicaWindow):
 
         # —— STEP 4: 布局组合 ——
         central = QWidget()
-        central.setContentsMargins(10, 10, 10, 10)
+        central.setContentsMargins(0, 0, 0, 0)
         v_layout = QVBoxLayout(central)
         v_layout.addWidget(tab_bar)
         v_layout.addWidget(self.stack)
@@ -73,9 +76,23 @@ class MainWindow(MicaWindow):
 
 
 if __name__ == "__main__":
-    # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    # —— STEP 0: 系统 DPI 感知 —— #
+    # Windows 8.1+
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    except Exception:
+        ctypes.windll.user32.SetProcessDPIAware()
+
+    # —— STEP 1: Qt 高 DPI 支持 —— #
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+
+    # —— STEP 3: 字体设置 —— #
+    font = QFont("Microsoft YaHei UI", 8)
     app = QApplication(sys.argv)
-    app.setFont(QFont("Microsoft YaHei UI", 12))
+    font.setHintingPreference(QFont.PreferNoHinting)
+    app.setFont(font)
     app.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     window = MainWindow()
     # 加载 QSS 样式

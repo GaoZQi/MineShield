@@ -34,9 +34,9 @@ class ExampleTab(RoundWidget):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统 - 攻击检测")
         self.setBackgroundColor(QColor(250, 250, 250, 200))
-        self.setRadius(20)
+        self.setRadius(10)
         self.setBorder(QColor(238, 238, 238), 2)
-        self.setContentsMargins(0, 0, 0, 0)
+        self.setContentsMargins(5, 5, 5, 5)
         """为每个模块创建输入框、按钮和结果显示区域"""
         layout = QVBoxLayout()
 
@@ -46,7 +46,7 @@ class ExampleTab(RoundWidget):
 
         tip_label = QLabel(func_name)
         tip_label.setObjectName("H2")
-        layout.addWidget(title_label)
+        layout.addWidget(tip_label)
 
         # 输入框：日志文件路径
         log_path_input = QLineEdit()

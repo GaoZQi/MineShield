@@ -23,12 +23,13 @@ class AttackDetectionTab(RoundWidget):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统 - 攻击检测")
         self.setBackgroundColor(QColor(250, 250, 250, 200))
-        self.setRadius(20)
+        self.setRadius(10)
         self.setBorder(QColor(238, 238, 238), 2)
-        self.setContentsMargins(0, 0, 0, 0)
+        self.setContentsMargins(10, 10, 10, 10)
 
         # 左侧导航列表
         self.list_widget = FluentListWidget()
+        self.list_widget.setContentsMargins(0, 0, 0, 0)
         self.list_widget.setFrameShape(FluentListWidget.NoFrame)
 
         # 右侧堆栈页面

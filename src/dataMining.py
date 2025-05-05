@@ -19,7 +19,6 @@ from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QFont, QColor
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
-import numpy as np
 from widget.RoundWidget import RoundWidget
 from QSSLoader import QSSLoader
 from widget.IconButton import IconButton
@@ -31,9 +30,9 @@ class DataMiningTab(RoundWidget):
     def __init__(self):
         super().__init__()
         self.setBackgroundColor(QColor(250, 250, 250, 200))
-        self.setRadius(20)
+        self.setRadius(10)
         self.setBorder(QColor(238, 238, 238), 2)
-        self.setContentsMargins(36, 0, 36, 36)  # 设置内边距
+        self.setContentsMargins(10, 0, 10, 10)  # 设置内边距
         self.algorithms = {
             "Dimensionality Reduction": DimensionalityReduction,
             "Linear Regression": LinearRegression,
@@ -58,7 +57,6 @@ class DataMiningTab(RoundWidget):
         self.tip = "算法："
         self.algorithm_label = QLabel(self.tip + self.choose)
         self.algorithm_label.setObjectName("H1")
-        self.algorithm_label.setMinimumWidth(720)
         svg_data = """
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
         <path d="M7.72 21.78a.75.75 0 0 0 1.06-1.06L5.56 17.5h14.69a.75.75 0 0 0 0-1.5H5.56l3.22-3.22a.75.75 0 1 0-1.06-1.06l-4.5 4.5a.75.75 0 0 0 0 1.06l4.5 4.5Zm8.56-9.5a.75.75 0 1 1-1.06-1.06L18.44 8H3.75a.75.75 0 0 1 0-1.5h14.69l-3.22-3.22a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5Z"></path>
@@ -70,7 +68,7 @@ class DataMiningTab(RoundWidget):
         )
         algorithm_button.clicked.connect(self.show_popup)
         alorgorithm_layout.addWidget(self.algorithm_label)
-        alorgorithm_layout.addSpacing(10)
+        alorgorithm_layout.addSpacing(5)
         alorgorithm_layout.addWidget(algorithm_button)
         alorgorithm_layout.setAlignment(Qt.AlignLeft)
         # main_layout.addLayout(alorgorithm_layout)
@@ -92,6 +90,7 @@ class DataMiningTab(RoundWidget):
 
         # Table for displaying data
         self.table = QTableWidget()
+        self.table.setMinimumWidth(350)
 
         # Run button
         self.run_button = QPushButton("运行")
@@ -100,7 +99,7 @@ class DataMiningTab(RoundWidget):
         self.run_button.clicked.connect(self.run_algorithm)
 
         # 在类初始化部分修改画布创建代码
-        self.canvas_container = RoundWidget(radius=20, color=QColor(255, 255, 255, 200))
+        self.canvas_container = RoundWidget(radius=10, color=QColor(255, 255, 255, 200))
         self.canvas_container.setContentsMargins(0, 0, 0, 0)
 
         self.figure, self.ax = plt.subplots()
@@ -114,11 +113,6 @@ class DataMiningTab(RoundWidget):
         canvas_layout = QVBoxLayout(self.canvas_container)
         canvas_layout.setContentsMargins(0, 0, 0, 0)
         canvas_layout.addWidget(self.canvas)
-
-        # 在界面布局中使用容器代替原画布
-        # Matplotlib canvas for visualization
-        # self.figure, self.ax = plt.subplots()
-        # self.canvas = FigureCanvas(self.figure)
 
         config_layout = QVBoxLayout()
         config_layout.addLayout(alorgorithm_layout)
@@ -135,7 +129,7 @@ class DataMiningTab(RoundWidget):
         # pic_layout.addWidget(self.canvas, stretch=3)
         pic_layout.addWidget(self.canvas_container, stretch=3)
         main_layout.addLayout(config_layout, 2)  # 左边3份
-        main_layout.addSpacing(20)  # 左右间距
+        main_layout.addSpacing(10)  # 左右间距
         main_layout.addLayout(pic_layout, 2)  # 右边2份
         main_layout.setStretch(0, 1)  # 第一个子布局（左边）权重3
         main_layout.setStretch(1, 2)  # 第二个子布局（右边）权重2
@@ -161,7 +155,7 @@ class DataMiningTab(RoundWidget):
             "正在处理中...",
             ha="center",
             va="center",
-            fontsize=20,
+            fontsize=14,
             color="gray",
         )
         self.canvas.draw()
@@ -250,12 +244,13 @@ class DataMiningTab(RoundWidget):
 
 
 if __name__ == "__main__":
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     app = QApplication(sys.argv)
     main_window = QMainWindow()
     app.setFont(QFont("Microsoft YaHei UI", 12))
     app.setStyleSheet(QSSLoader.load_qss_files("../style"))
     main_window.setWindowTitle("Data Mining and Attack Detection System")
-    main_window.setGeometry(100, 100, 1650, 1000)
+    main_window.setGeometry(100, 100, 825, 500)
 
     data_tab = DataMiningTab()
     main_window.setCentralWidget(data_tab)
