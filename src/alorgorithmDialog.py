@@ -4,11 +4,12 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QPushButton,
-    QComboBox,
 )
 from PyQt5.QtCore import Qt
-from QSSLoader import QSSLoader
 from PyQt5.QtGui import QFont, QColor, QPainter, QPen
+import sys
+
+from mod.QSSLoader import QSSLoader
 from widget.RoundComboBox import RoundComboBox
 
 
@@ -112,7 +113,7 @@ if __name__ == "__main__":
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
     app = QApplication(sys.argv)
-    app.setStyleSheet(QSSLoader.load_qss_files("../style"))
+    app.setStyleSheet(QSSLoader.load_qss_files("../../style"))
     app.setFont(QFont("Microsoft YaHei UI", 12))
     dialog = alorgorithmDialog()
 

@@ -18,7 +18,7 @@ from PyQt5.QtGui import QFont, QColor
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 from widget.RoundWidget import RoundWidget
-from QSSLoader import QSSLoader
+from mod.QSSLoader import QSSLoader
 from widget.IconButton import IconButton
 from alorgorithmDialog import alorgorithmDialog as PopupDialog
 from algorithms import *

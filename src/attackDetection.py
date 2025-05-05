@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt
 from widget.RoundWidget import RoundWidget
 from widget.FluentListWidget import FluentListWidget
-from pages.CLImode import CLITab
+from pages import *
 
 
 class AttackDetectionTab(RoundWidget):
@@ -59,7 +59,7 @@ class AttackDetectionTab(RoundWidget):
                 "title": "恶意扫描数据包检测",
                 "func_name": "KNN",
                 "script": "./algorithms/attackDetection/KNN.py",
-                "widget": CLITab,
+                "widget": CLIInputTab,
             },
             {
                 "title": "DDoS 攻击检测",
@@ -126,15 +126,16 @@ class AttackDetectionTab(RoundWidget):
 
 
 if __name__ == "__main__":
-    from QSSLoader import QSSLoader
+    from mod.QSSLoader import QSSLoader
     from PyQt5.QtGui import QFont
 
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     app = QApplication(sys.argv)
     app.setFont(QFont("Microsoft YaHei UI", 12))
     app.setStyleSheet(QSSLoader.load_qss_files("../style"))
     main_window = QMainWindow()
     main_window.setWindowTitle("Data Mining and Attack Detection System")
-    main_window.setGeometry(100, 100, 1650, 1000)
+    main_window.setGeometry(100, 100, 825, 500)
 
     data_tab = AttackDetectionTab()
     main_window.setCentralWidget(data_tab)

@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QStyle
 class ComboBoxItemDelegate(QStyledItemDelegate):
     def sizeHint(self, option, index):
         size = super().sizeHint(option, index)
-        size.setHeight(30)  # 增加高度留出阴影空间
+        size.setHeight(35)  # 增加高度留出阴影空间
         return size
 
     def paint(self, painter, option, index):
@@ -24,7 +24,7 @@ class ComboBoxItemDelegate(QStyledItemDelegate):
         )
         painter.setBrush(bg_color)
         painter.setPen(Qt.NoPen)
-        painter.drawRoundedRect(original_rect, 10, 10)
+        painter.drawRoundedRect(original_rect, 5, 5)
 
         # 绘制文本
         text_rect = original_rect.adjusted(12, 0, -7, 0)
@@ -45,7 +45,7 @@ class RoundComboBox(QComboBox):
         self.icon_font.setPixelSize(12)  # 控制图标大小
 
     def setup_styles(self):
-        self.setFixedHeight(30)
+        self.setFixedHeight(35)
         self.setStyleSheet(
             """
             QComboBox {

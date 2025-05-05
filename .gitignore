@@ -12,3 +12,7 @@ wheels/
 # VS Code plugins
 .history/
 MineShield.code-workspace
+
+/dist
+/build
+*.spec

@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QPushButton,
     QTextEdit,
-    QFileDialog,
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
@@ -19,7 +18,7 @@ sys.path.append("..")
 from widget.RoundWidget import RoundWidget
 
 
-class CLITab(RoundWidget):
+class CLIInputTab(RoundWidget):
     def __init__(self, tab_name="Example", algorithm_name="Example", script=""):
         super().__init__()
         self.setWindowTitle("数据挖掘与攻击检测展示系统 - 攻击检测")
@@ -27,6 +26,9 @@ class CLITab(RoundWidget):
         self.setRadius(10)
         self.setBorder(QColor(238, 238, 238), 2)
         self.setContentsMargins(5, 5, 5, 5)
+
+        self.script = script
+        self.process = None  # 保存 QProcess 实例
 
         layout = QVBoxLayout()
 
@@ -37,66 +39,53 @@ class CLITab(RoundWidget):
         tip_label = QLabel("核心算法：" + algorithm_name)
         tip_label.setObjectName("H2")
         layout.addWidget(tip_label)
-        file_layout = QHBoxLayout()
-        # 输入框：日志文件路径
-        log_path_input = QLineEdit()
-        log_path_input.setPlaceholderText("请输入待检测文件路径")
-        log_path_input.setReadOnly(True)
-        file_layout.addWidget(log_path_input)
-
-        # 浏览按钮
-        browse_button = QPushButton("选择文件")
-        browse_button.clicked.connect(lambda: self.browse_file(log_path_input))
-        file_layout.addWidget(browse_button)
-        layout.addLayout(file_layout)
-        # 开始检测按钮（初始禁用）
-        start_button = QPushButton("开始检测")
-        start_button.setObjectName("OKButton")
-        start_button.setEnabled(False)
-        start_button.clicked.connect(
-            lambda: self.start_detection(script, log_path_input.text())
-        )
-        layout.addWidget(start_button)
 
         # 显示结果的文本框
         result_display = QTextEdit()
         result_display.setReadOnly(True)
         layout.addWidget(result_display)
 
+        file_layout = QHBoxLayout()
+        # 输入框
+        log_path_input = QLineEdit()
+        log_path_input.setPlaceholderText("请输入文本")
+        file_layout.addWidget(log_path_input)
+
+        # 开始检测按钮（初始禁用）
+        start_button = QPushButton("\uf0ad")
+        start_button.setFont(QFont("Segoe Fluent Icons", 10))
+        start_button.setStyleSheet("padding: 0px;")
+        start_button.setFixedSize(30, 30)
+        start_button.setObjectName("OKButton")
+        start_button.setEnabled(False)
+        start_button.clicked.connect(self.on_start_clicked)
+        file_layout.addWidget(start_button)
+
+        layout.addLayout(file_layout)
+
         self.result_display = result_display
         self.log_path_input = log_path_input
         self.start_button = start_button
 
-        # 输入框文本变化时检查启用状态
         log_path_input.textChanged.connect(self.check_start_button)
 
         self.setLayout(layout)
 
+        self.start_detection(self.script)
+
     def check_start_button(self):
-        """检查是否启用开始检测按钮"""
         if self.log_path_input.text():
             self.start_button.setEnabled(True)
         else:
             self.start_button.setEnabled(False)
 
-    def browse_file(self, log_path_input):
-        """打开文件对话框选择日志文件"""
-        file_path, _ = QFileDialog.getOpenFileName(
-            self, "选择要上传的文件", "", "文件 (*)"
-        )
-        if file_path:
-            log_path_input.setText(file_path)
-            self.result_display.clear()  # 清空日志
-
-    def start_detection(self, script, log_file_path):
-        if not log_file_path:
-            return
-
+    def start_detection(self, script):
         self.result_display.clear()
 
-        process = QProcess(self)
-        process.readyReadStandardOutput.connect(lambda: self.handle_stdout(process))
-        process.readyReadStandardError.connect(lambda: self.handle_stderr(process))
+        self.process = QProcess(self)
+        self.process.readyReadStandardOutput.connect(self.handle_stdout)
+        self.process.readyReadStandardError.connect(self.handle_stderr)
+        self.process.setProcessChannelMode(QProcess.MergedChannels)  # 合并输出
 
         python_executable = sys.executable
         if not python_executable:
@@ -106,21 +95,28 @@ class CLITab(RoundWidget):
         abs_script = os.path.abspath(script)
         self.result_display.append(f"启动脚本: {abs_script}")
 
-        process.start(python_executable, [abs_script])
+        self.process.start(python_executable, [abs_script])
 
-        process.waitForStarted()
-        process.write(log_file_path.encode() + b"\n")
+        if not self.process.waitForStarted():
+            self.result_display.append("脚本启动失败")
 
-    def handle_stdout(self, process):
-        data = process.readAllStandardOutput().data()
+    def on_start_clicked(self):
+        input_text = self.log_path_input.text()
+        if self.process and self.process.state() == QProcess.Running:
+            self.process.write((input_text + "\n").encode("utf-8"))  # 写入并回车
+        else:
+            self.result_display.append("进程未启动或已退出")
+
+    def handle_stdout(self):
+        data = self.process.readAllStandardOutput().data()
         try:
             text = data.decode("utf-8")
         except UnicodeDecodeError:
             text = data.decode("gbk", errors="replace")
         self.result_display.append(text)
 
-    def handle_stderr(self, process):
-        error_data = process.readAllStandardError().data()
+    def handle_stderr(self):
+        error_data = self.process.readAllStandardError().data()
         try:
             text = error_data.decode("utf-8")
         except UnicodeDecodeError:
@@ -138,7 +134,8 @@ if __name__ == "__main__":
     main_window.setWindowTitle("Data Mining and Attack Detection System")
     main_window.setGeometry(100, 100, 1650, 1000)
 
-    data_tab = CLITab()
+    data_tab = CLIInputTab(script="your_script.py")
+
     main_window.setCentralWidget(data_tab)
 
     main_window.show()
