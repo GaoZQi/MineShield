@@ -96,6 +96,20 @@ class alorgorithmDialog(QDialog):
 if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtCore import Qt
+    import ctypes
+
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    # —— STEP 0: 系统 DPI 感知 —— #
+    # Windows 8.1+
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    except Exception:
+        ctypes.windll.user32.SetProcessDPIAware()
+
+    # —— STEP 1: Qt 高 DPI 支持 —— #
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
     app = QApplication(sys.argv)
     app.setStyleSheet(QSSLoader.load_qss_files("../style"))

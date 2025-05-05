@@ -13,7 +13,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QColor
 from QSSLoader import QSSLoader
 from dataMining import DataMiningTab
-from attackDetection_1 import AttackDetectionTab
+from attackDetection import AttackDetectionTab
 from widget.RoundWidget import RoundWidget
 from widget.MicaWindow import MicaWindow
 from widget.TabButton import TabButton
@@ -46,6 +46,7 @@ class MainWindow(MicaWindow):
         tab_bar.setBorder(QColor(238, 238, 238), 0)
         tab_bar.setContentsMargins(0, 0, 0, 0)  # 新增：去除按钮容器边距
         h_layout = QHBoxLayout(tab_bar)
+        h_layout.setSpacing(0)  # 新增：去除按钮间距
         h_layout.setContentsMargins(2, 2, 2, 2)
 
         for idx, (text, widget) in enumerate(

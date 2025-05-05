@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import QComboBox, QStyledItemDelegate
-from PyQt5.QtCore import QRect, Qt, QByteArray
-from PyQt5.QtGui import QPainter, QPen, QColor, QBrush, QPixmap
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtGui import QPainter, QPen, QColor, QBrush, QFont
 from PyQt5.QtWidgets import QStyle
-from PyQt5.QtSvg import QSvgRenderer
 
 
 class ComboBoxItemDelegate(QStyledItemDelegate):
@@ -40,15 +39,10 @@ class RoundComboBox(QComboBox):
         super().__init__(parent)
         self.setup_styles()
         self.setItemDelegate(ComboBoxItemDelegate(self))
-        # 初始化SVG渲染器
-        self.svg_data = QByteArray(
-            b"""
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path d="M5.22 8.22a.749.749 0 0 0 0 1.06l6.25 6.25a.749.749 0 0 0 1.06 0l6.25-6.25a.749.749 0 1 0-1.06-1.06L12 13.939 6.28 8.22a.749.749 0 0 0-1.06 0Z"/>
-            </svg>
-        """
-        )
-        self.renderer = QSvgRenderer(self.svg_data)
+
+        # 初始化字体
+        self.icon_font = QFont("Segoe Fluent Icons")
+        self.icon_font.setPixelSize(12)  # 控制图标大小
 
     def setup_styles(self):
         self.setFixedHeight(30)
@@ -108,33 +102,15 @@ class RoundComboBox(QComboBox):
         painter.setPen(QColor("#1a1a1a"))
         painter.drawText(text_rect, Qt.AlignLeft | Qt.AlignVCenter, self.currentText())
 
-        # 绘制自定义SVG箭头
-        arrow_size = 12
-        arrow_rect = QRect(
-            self.width() - 22,
-            (self.height() - arrow_size) // 2,
-            arrow_size,
-            arrow_size,
-        )
-        arrow_pixmap = QPixmap(arrow_size, arrow_size)
-        arrow_pixmap.fill(Qt.transparent)
+        # 绘制字体图标箭头
+        painter.save()
+        painter.setFont(self.icon_font)
+        painter.setPen(QColor("#1a1a1a"))
 
-        pix_painter = QPainter(arrow_pixmap)
-        self.renderer.render(pix_painter)
-        pix_painter.end()
-
-        # 应用颜色滤镜
-        arrow_pixmap = self.recolor_pixmap(arrow_pixmap, QColor("#1a1a1a"))
-        painter.drawPixmap(arrow_rect, arrow_pixmap)
-
-    def recolor_pixmap(self, pixmap, color):
-        """修改SVG颜色"""
-        image = pixmap.toImage()
-        for x in range(image.width()):
-            for y in range(image.height()):
-                if image.pixelColor(x, y).alpha() > 0:
-                    image.setPixelColor(x, y, color)
-        return QPixmap.fromImage(image)
+        # 计算图标位置
+        icon_rect = QRect(self.width() - 30, 0, 24, self.height())
+        painter.drawText(icon_rect, Qt.AlignCenter, "\uf08e")  # 使用Unicode字符
+        painter.restore()
 
 
 if __name__ == "__main__":
@@ -143,6 +119,6 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     combo = RoundComboBox()
-    combo.addItems([f"Option {i}" for i in range(1, 20)])  # 添加更多项测试滚动条
+    combo.addItems([f"Option {i}" for i in range(1, 20)])
     combo.show()
     sys.exit(app.exec_())

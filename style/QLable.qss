@@ -26,7 +26,7 @@ QLabel#P1 {
     /* padding-left: 10px; */
     padding-top: 15px;
     /* padding-right: 7px; */
-    padding-bottom: 12px;
+    padding-bottom: 6px;
 }
 
 QLabel#P2 {

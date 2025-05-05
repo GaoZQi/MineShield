@@ -137,7 +137,6 @@ class AgglomerativeClusteringPredict:
 
         # 显示聚类结果
         unique_labels = set(self.test_labels)
-        plt.figure(figsize=(10, 8))
         colormap = plt.cm.get_cmap("tab10", len(unique_labels))  # 获取色图
 
         for i, label in enumerate(unique_labels):
@@ -145,7 +144,7 @@ class AgglomerativeClusteringPredict:
             label_name = self.attack_type_mapping.get(
                 label, "Unknown"
             )  # 获取对应的标签名称
-            plt.scatter(
+            ax.scatter(
                 self.X_test_umap[self.test_labels == label, 0],
                 self.X_test_umap[self.test_labels == label, 1],
                 color=color,
@@ -158,7 +157,7 @@ class AgglomerativeClusteringPredict:
         ax.set_title("Agglomerative Clustering on Test Set")
         ax.set_xlabel("UMAP Component 1")
         ax.set_ylabel("UMAP Component 2")
-        anext.legend(loc="upper right", title="Cluster Labels")
+        ax.legend(loc="upper right", title="Cluster Labels")
         canvas.draw()
 
     def run(self, ax, canvas):
