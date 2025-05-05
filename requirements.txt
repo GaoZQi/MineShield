@@ -21,11 +21,7 @@ charset-normalizer==3.4.2
     #   mineshield (pyproject.toml)
     #   requests
 click==8.1.8
-    # via
-    #   nltk
-    #   pyqt5-plugins
-    #   pyqt5-tools
-    #   qt5-tools
+    # via nltk
 colorama==0.4.6
     # via
     #   click
@@ -178,35 +174,20 @@ pynndescent==0.5.13
     # via umap-learn
 pyparsing==3.2.3
     # via matplotlib
-pyqt5==5.15.9
-    # via
-    #   mineshield (pyproject.toml)
-    #   pyqt5-plugins
-    #   pyqt5-tools
-pyqt5-plugins==5.15.9.2.3
-    # via pyqt5-tools
+pyqt5==5.15.11
+    # via mineshield (pyproject.toml)
 pyqt5-qt5==5.15.2
-    # via
-    #   pyqt5
-    #   pyqt5-plugins
+    # via pyqt5
 pyqt5-sip==12.17.0
     # via pyqt5
-pyqt5-tools==5.15.9.3.3
-    # via mineshield (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via
     #   matplotlib
     #   pandas
-python-dotenv==1.1.0
-    # via pyqt5-tools
 pytz==2025.2
     # via pandas
 pywin32==310
     # via mineshield (pyproject.toml)
-qt5-applications==5.15.2.2.3
-    # via qt5-tools
-qt5-tools==5.15.2.1.3
-    # via pyqt5-plugins
 regex==2024.11.6
     # via nltk
 requests==2.32.3
@@ -217,7 +198,7 @@ rich==14.0.0
     # via
     #   mineshield (pyproject.toml)
     #   keras
-scikit-learn==1.6.1
+scikit-learn==1.5.2
     # via
     #   mineshield (pyproject.toml)
     #   mlxtend
