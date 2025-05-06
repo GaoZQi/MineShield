@@ -47,7 +47,7 @@ class AttackDetectionTab(RoundWidget):
                 "title": "恶意URL请求检测",
                 "func_name": "Logistics Regression",
                 "script": "./algorithms/attackDetection/Logistics-Regression.py",
-                "widget": CLITab,
+                "widget": CLIInputTab,
             },
             {
                 "title": "恶意邮件检测",
@@ -88,13 +88,13 @@ class AttackDetectionTab(RoundWidget):
             {
                 "title": "SQL注入攻击检测",
                 "func_name": "SVM",
-                "script": "./algorithms/attackDetection/.py",
+                "script": "./algorithms/attackDetection/SVM-SQL.py",
                 "widget": CLITab,
             },
             {
                 "title": "XSS攻击检测",
                 "func_name": "LSTM",
-                "script": "./algorithms/attackDetection/.py",
+                "script": "./algorithms/attackDetection/LSTM-XSS.py",
                 "widget": CLITab,
             },
         ]

@@ -1,6 +1,6 @@
 import joblib
 import warnings
-
+import os
 warnings.filterwarnings("ignore")
 
 
@@ -14,11 +14,19 @@ def get_ngrams(query) -> list:
 
 class Model:
     def __init__(self):
+        """
+        初始化模型、编码器、特征名
+        """
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         self.vectorizer = joblib.load(
-            "../../res/model/Logistics_Regression/vectorizer-LOG.pkl"
+            os.path.normpath(
+                os.path.join(base_dir, "../../../res/model/Logistics_Regression/vectorizer-LOG.pkl")
+            )
         )
         self.model = joblib.load(
-            "../../res/model/Logistics_Regression/lg-urldetect.pkl"
+            os.path.normpath(
+                os.path.join(base_dir, "../../../res/model/Logistics_Regression/lg-urldetect.pkl")
+            )
         )
 
     def predict(self, url: str) -> bool:
