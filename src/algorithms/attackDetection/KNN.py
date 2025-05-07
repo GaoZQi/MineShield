@@ -1,7 +1,10 @@
 import joblib
 import pandas as pd
 import os
+import warnings
+warnings.filterwarnings("ignore")
 
+# 60,0,64,4444,80,0,2,8192,20,12345,1,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1
 
 class AttackKNNDetector:
     def __init__(self):
